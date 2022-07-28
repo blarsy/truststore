@@ -1,0 +1,14 @@
+syntax = "proto3";
+package blarsy.truststore.truststore;
+
+import "gogoproto/gogo.proto";
+import "truststore/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/blarsy/truststore/x/truststore/types";
+
+// GenesisState defines the truststore module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}
