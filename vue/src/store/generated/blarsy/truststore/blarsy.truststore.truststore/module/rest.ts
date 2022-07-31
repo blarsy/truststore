@@ -20,10 +20,6 @@ export interface RpcStatus {
   details?: ProtobufAny[];
 }
 
-export interface TruststoreMsgCreateAttestationResponse {
-  idValue?: string;
-}
-
 /**
  * Params defines the parameters for the module.
  */

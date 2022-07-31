@@ -15,9 +15,6 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_truststore"
-
-	NewId          = "new_id"
-	AttestationKey = "Attestation-value-"
 )
 
 func KeyPrefix(p string) []byte {
