@@ -9,6 +9,7 @@ export interface Attestation {
   identifier: string;
   identifierType: number;
   rating: number;
+  creator: string;
 }
 
 const baseAttestation: object = {
@@ -16,6 +17,7 @@ const baseAttestation: object = {
   identifier: "",
   identifierType: 0,
   rating: 0,
+  creator: "",
 };
 
 export const Attestation = {
@@ -31,6 +33,9 @@ export const Attestation = {
     }
     if (message.rating !== 0) {
       writer.uint32(32).uint64(message.rating);
+    }
+    if (message.creator !== "") {
+      writer.uint32(42).string(message.creator);
     }
     return writer;
   },
@@ -53,6 +58,9 @@ export const Attestation = {
           break;
         case 4:
           message.rating = longToNumber(reader.uint64() as Long);
+          break;
+        case 5:
+          message.creator = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -84,6 +92,11 @@ export const Attestation = {
     } else {
       message.rating = 0;
     }
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
     return message;
   },
 
@@ -94,6 +107,7 @@ export const Attestation = {
     message.identifierType !== undefined &&
       (obj.identifierType = message.identifierType);
     message.rating !== undefined && (obj.rating = message.rating);
+    message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
 
@@ -118,6 +132,11 @@ export const Attestation = {
       message.rating = object.rating;
     } else {
       message.rating = 0;
+    }
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
     }
     return message;
   },

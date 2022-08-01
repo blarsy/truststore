@@ -8,6 +8,6 @@ message Attestation {
   string identifier = 2; 
   uint64 identifierType = 3; 
   uint64 rating = 4; 
-  
+  string creator = 5;
 }
 

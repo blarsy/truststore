@@ -29,6 +29,8 @@ paths:
                     rating:
                       type: string
                       format: uint64
+                    creator:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -156,6 +158,8 @@ paths:
                   rating:
                     type: string
                     format: uint64
+                  creator:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -30599,6 +30603,8 @@ definitions:
       rating:
         type: string
         format: uint64
+      creator:
+        type: string
   blarsy.truststore.truststore.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -30620,6 +30626,8 @@ definitions:
             rating:
               type: string
               format: uint64
+            creator:
+              type: string
       pagination:
         type: object
         properties:
@@ -30661,6 +30669,8 @@ definitions:
           rating:
             type: string
             format: uint64
+          creator:
+            type: string
   blarsy.truststore.truststore.QueryParamsResponse:
     type: object
     properties:
