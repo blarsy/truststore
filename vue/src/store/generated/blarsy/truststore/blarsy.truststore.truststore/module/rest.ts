@@ -20,10 +20,40 @@ export interface RpcStatus {
   details?: ProtobufAny[];
 }
 
+export interface TruststoreAttestation {
+  index?: string;
+  identifier?: string;
+
+  /** @format uint64 */
+  identifierType?: string;
+
+  /** @format uint64 */
+  rating?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */
 export type TruststoreParams = object;
+
+export interface TruststoreQueryAllAttestationResponse {
+  attestation?: TruststoreAttestation[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface TruststoreQueryGetAttestationResponse {
+  attestation?: TruststoreAttestation;
+}
 
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
@@ -31,6 +61,62 @@ export type TruststoreParams = object;
 export interface TruststoreQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: TruststoreParams;
+}
+
+/**
+* message SomeRequest {
+         Foo some_parameter = 1;
+         PageRequest pagination = 2;
+ }
+*/
+export interface V1Beta1PageRequest {
+  /**
+   * key is a value returned in PageResponse.next_key to begin
+   * querying the next page most efficiently. Only one of offset or key
+   * should be set.
+   * @format byte
+   */
+  key?: string;
+
+  /**
+   * offset is a numeric offset that can be used when key is unavailable.
+   * It is less efficient than using key. Only one of offset or key should
+   * be set.
+   * @format uint64
+   */
+  offset?: string;
+
+  /**
+   * limit is the total number of results to be returned in the result page.
+   * If left empty it will default to a value to be set by each app.
+   * @format uint64
+   */
+  limit?: string;
+
+  /**
+   * count_total is set to true  to indicate that the result set should include
+   * a count of the total number of items available for pagination in UIs.
+   * count_total is only respected when offset is used. It is ignored when key
+   * is set.
+   */
+  count_total?: boolean;
+}
+
+/**
+* PageResponse is to be embedded in gRPC response messages where the
+corresponding request message has used PageRequest.
+
+ message SomeResponse {
+         repeated Bar results = 1;
+         PageResponse page = 2;
+ }
+*/
+export interface V1Beta1PageResponse {
+  /** @format byte */
+  next_key?: string;
+
+  /** @format uint64 */
+  total?: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -225,10 +311,51 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title truststore/genesis.proto
+ * @title truststore/attestation.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAttestationAll
+   * @summary Queries a list of Attestation items.
+   * @request GET:/blarsy/truststore/truststore/attestation
+   */
+  queryAttestationAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<TruststoreQueryAllAttestationResponse, RpcStatus>({
+      path: `/blarsy/truststore/truststore/attestation`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAttestation
+   * @summary Queries a Attestation by index.
+   * @request GET:/blarsy/truststore/truststore/attestation/{index}
+   */
+  queryAttestation = (index: string, params: RequestParams = {}) =>
+    this.request<TruststoreQueryGetAttestationResponse, RpcStatus>({
+      path: `/blarsy/truststore/truststore/attestation/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *
