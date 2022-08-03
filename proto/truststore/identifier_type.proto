@@ -1,0 +1,12 @@
+syntax = "proto3";
+package blarsy.truststore.truststore;
+
+option go_package = "github.com/blarsy/truststore/x/truststore/types";
+
+message IdentifierType {
+  string index = 1; 
+  string name = 2; 
+  string description = 3; 
+  
+}
+

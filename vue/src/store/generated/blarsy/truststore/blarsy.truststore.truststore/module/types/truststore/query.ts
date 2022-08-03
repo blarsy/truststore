@@ -6,6 +6,7 @@ import {
   PageRequest,
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
+import { IdentifierType } from "../truststore/identifier_type";
 
 export const protobufPackage = "blarsy.truststore.truststore";
 
@@ -32,6 +33,23 @@ export interface QueryAllAttestationRequest {
 
 export interface QueryAllAttestationResponse {
   attestation: Attestation[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetIdentifierTypeRequest {
+  index: string;
+}
+
+export interface QueryGetIdentifierTypeResponse {
+  identifierType: IdentifierType | undefined;
+}
+
+export interface QueryAllIdentifierTypeRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllIdentifierTypeResponse {
+  identifierType: IdentifierType[];
   pagination: PageResponse | undefined;
 }
 
@@ -449,6 +467,330 @@ export const QueryAllAttestationResponse = {
   },
 };
 
+const baseQueryGetIdentifierTypeRequest: object = { index: "" };
+
+export const QueryGetIdentifierTypeRequest = {
+  encode(
+    message: QueryGetIdentifierTypeRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.index !== "") {
+      writer.uint32(10).string(message.index);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetIdentifierTypeRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetIdentifierTypeRequest,
+    } as QueryGetIdentifierTypeRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.index = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetIdentifierTypeRequest {
+    const message = {
+      ...baseQueryGetIdentifierTypeRequest,
+    } as QueryGetIdentifierTypeRequest;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = String(object.index);
+    } else {
+      message.index = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetIdentifierTypeRequest): unknown {
+    const obj: any = {};
+    message.index !== undefined && (obj.index = message.index);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetIdentifierTypeRequest>
+  ): QueryGetIdentifierTypeRequest {
+    const message = {
+      ...baseQueryGetIdentifierTypeRequest,
+    } as QueryGetIdentifierTypeRequest;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = object.index;
+    } else {
+      message.index = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetIdentifierTypeResponse: object = {};
+
+export const QueryGetIdentifierTypeResponse = {
+  encode(
+    message: QueryGetIdentifierTypeResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.identifierType !== undefined) {
+      IdentifierType.encode(
+        message.identifierType,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetIdentifierTypeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetIdentifierTypeResponse,
+    } as QueryGetIdentifierTypeResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.identifierType = IdentifierType.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetIdentifierTypeResponse {
+    const message = {
+      ...baseQueryGetIdentifierTypeResponse,
+    } as QueryGetIdentifierTypeResponse;
+    if (object.identifierType !== undefined && object.identifierType !== null) {
+      message.identifierType = IdentifierType.fromJSON(object.identifierType);
+    } else {
+      message.identifierType = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetIdentifierTypeResponse): unknown {
+    const obj: any = {};
+    message.identifierType !== undefined &&
+      (obj.identifierType = message.identifierType
+        ? IdentifierType.toJSON(message.identifierType)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetIdentifierTypeResponse>
+  ): QueryGetIdentifierTypeResponse {
+    const message = {
+      ...baseQueryGetIdentifierTypeResponse,
+    } as QueryGetIdentifierTypeResponse;
+    if (object.identifierType !== undefined && object.identifierType !== null) {
+      message.identifierType = IdentifierType.fromPartial(
+        object.identifierType
+      );
+    } else {
+      message.identifierType = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllIdentifierTypeRequest: object = {};
+
+export const QueryAllIdentifierTypeRequest = {
+  encode(
+    message: QueryAllIdentifierTypeRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllIdentifierTypeRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllIdentifierTypeRequest,
+    } as QueryAllIdentifierTypeRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllIdentifierTypeRequest {
+    const message = {
+      ...baseQueryAllIdentifierTypeRequest,
+    } as QueryAllIdentifierTypeRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllIdentifierTypeRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllIdentifierTypeRequest>
+  ): QueryAllIdentifierTypeRequest {
+    const message = {
+      ...baseQueryAllIdentifierTypeRequest,
+    } as QueryAllIdentifierTypeRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllIdentifierTypeResponse: object = {};
+
+export const QueryAllIdentifierTypeResponse = {
+  encode(
+    message: QueryAllIdentifierTypeResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.identifierType) {
+      IdentifierType.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllIdentifierTypeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllIdentifierTypeResponse,
+    } as QueryAllIdentifierTypeResponse;
+    message.identifierType = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.identifierType.push(
+            IdentifierType.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllIdentifierTypeResponse {
+    const message = {
+      ...baseQueryAllIdentifierTypeResponse,
+    } as QueryAllIdentifierTypeResponse;
+    message.identifierType = [];
+    if (object.identifierType !== undefined && object.identifierType !== null) {
+      for (const e of object.identifierType) {
+        message.identifierType.push(IdentifierType.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllIdentifierTypeResponse): unknown {
+    const obj: any = {};
+    if (message.identifierType) {
+      obj.identifierType = message.identifierType.map((e) =>
+        e ? IdentifierType.toJSON(e) : undefined
+      );
+    } else {
+      obj.identifierType = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllIdentifierTypeResponse>
+  ): QueryAllIdentifierTypeResponse {
+    const message = {
+      ...baseQueryAllIdentifierTypeResponse,
+    } as QueryAllIdentifierTypeResponse;
+    message.identifierType = [];
+    if (object.identifierType !== undefined && object.identifierType !== null) {
+      for (const e of object.identifierType) {
+        message.identifierType.push(IdentifierType.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -461,6 +803,14 @@ export interface Query {
   AttestationAll(
     request: QueryAllAttestationRequest
   ): Promise<QueryAllAttestationResponse>;
+  /** Queries a IdentifierType by index. */
+  IdentifierType(
+    request: QueryGetIdentifierTypeRequest
+  ): Promise<QueryGetIdentifierTypeResponse>;
+  /** Queries a list of IdentifierType items. */
+  IdentifierTypeAll(
+    request: QueryAllIdentifierTypeRequest
+  ): Promise<QueryAllIdentifierTypeResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -503,6 +853,34 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllAttestationResponse.decode(new Reader(data))
+    );
+  }
+
+  IdentifierType(
+    request: QueryGetIdentifierTypeRequest
+  ): Promise<QueryGetIdentifierTypeResponse> {
+    const data = QueryGetIdentifierTypeRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "blarsy.truststore.truststore.Query",
+      "IdentifierType",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetIdentifierTypeResponse.decode(new Reader(data))
+    );
+  }
+
+  IdentifierTypeAll(
+    request: QueryAllIdentifierTypeRequest
+  ): Promise<QueryAllIdentifierTypeResponse> {
+    const data = QueryAllIdentifierTypeRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "blarsy.truststore.truststore.Query",
+      "IdentifierTypeAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllIdentifierTypeResponse.decode(new Reader(data))
     );
   }
 }

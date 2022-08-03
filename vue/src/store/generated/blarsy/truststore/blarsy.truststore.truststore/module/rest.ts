@@ -32,6 +32,12 @@ export interface TruststoreAttestation {
   creator?: string;
 }
 
+export interface TruststoreIdentifierType {
+  index?: string;
+  name?: string;
+  description?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */
@@ -52,8 +58,27 @@ export interface TruststoreQueryAllAttestationResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface TruststoreQueryAllIdentifierTypeResponse {
+  identifierType?: TruststoreIdentifierType[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface TruststoreQueryGetAttestationResponse {
   attestation?: TruststoreAttestation;
+}
+
+export interface TruststoreQueryGetIdentifierTypeResponse {
+  identifierType?: TruststoreIdentifierType;
 }
 
 /**
@@ -101,13 +126,6 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
-  reverse?: boolean;
 }
 
 /**
@@ -337,7 +355,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -360,6 +377,47 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryAttestation = (index: string, params: RequestParams = {}) =>
     this.request<TruststoreQueryGetAttestationResponse, RpcStatus>({
       path: `/blarsy/truststore/truststore/attestation/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryIdentifierTypeAll
+   * @summary Queries a list of IdentifierType items.
+   * @request GET:/blarsy/truststore/truststore/identifier_type
+   */
+  queryIdentifierTypeAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<TruststoreQueryAllIdentifierTypeResponse, RpcStatus>({
+      path: `/blarsy/truststore/truststore/identifier_type`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryIdentifierType
+   * @summary Queries a IdentifierType by index.
+   * @request GET:/blarsy/truststore/truststore/identifier_type/{index}
+   */
+  queryIdentifierType = (index: string, params: RequestParams = {}) =>
+    this.request<TruststoreQueryGetIdentifierTypeResponse, RpcStatus>({
+      path: `/blarsy/truststore/truststore/identifier_type/${index}`,
       method: "GET",
       format: "json",
       ...params,

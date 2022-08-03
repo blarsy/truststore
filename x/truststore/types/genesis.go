@@ -11,6 +11,12 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		AttestationList: []Attestation{},
+		IdentifierTypeList: []IdentifierType{
+			{"1", "email", "Email address"},
+			{"2", "twitter", "Twitter handle"},
+			{"3", "facebook", "Facebook handle"},
+			{"4", "mobile", "Mobile phone number"},
+		},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -28,6 +34,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for attestation")
 		}
 		attestationIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in identifierType
+	identifierTypeIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.IdentifierTypeList {
+		index := string(IdentifierTypeKey(elem.Index))
+		if _, ok := identifierTypeIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for identifierType")
+		}
+		identifierTypeIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

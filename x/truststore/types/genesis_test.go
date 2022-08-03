@@ -30,6 +30,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
+				IdentifierTypeList: []types.IdentifierType{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -38,6 +46,20 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated attestation",
 			genState: &types.GenesisState{
 				AttestationList: []types.Attestation{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated identifierType",
+			genState: &types.GenesisState{
+				IdentifierTypeList: []types.IdentifierType{
 					{
 						Index: "0",
 					},

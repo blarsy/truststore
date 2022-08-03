@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Params } from "../truststore/params";
 import { Attestation } from "../truststore/attestation";
+import { IdentifierType } from "../truststore/identifier_type";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "blarsy.truststore.truststore";
@@ -8,8 +9,9 @@ export const protobufPackage = "blarsy.truststore.truststore";
 /** GenesisState defines the truststore module's genesis state. */
 export interface GenesisState {
   params: Params | undefined;
-  /** this line is used by starport scaffolding # genesis/proto/state */
   attestationList: Attestation[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  identifierTypeList: IdentifierType[];
 }
 
 const baseGenesisState: object = {};
@@ -22,6 +24,9 @@ export const GenesisState = {
     for (const v of message.attestationList) {
       Attestation.encode(v!, writer.uint32(18).fork()).ldelim();
     }
+    for (const v of message.identifierTypeList) {
+      IdentifierType.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -30,6 +35,7 @@ export const GenesisState = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseGenesisState } as GenesisState;
     message.attestationList = [];
+    message.identifierTypeList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -39,6 +45,11 @@ export const GenesisState = {
         case 2:
           message.attestationList.push(
             Attestation.decode(reader, reader.uint32())
+          );
+          break;
+        case 3:
+          message.identifierTypeList.push(
+            IdentifierType.decode(reader, reader.uint32())
           );
           break;
         default:
@@ -52,6 +63,7 @@ export const GenesisState = {
   fromJSON(object: any): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.attestationList = [];
+    message.identifierTypeList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -63,6 +75,14 @@ export const GenesisState = {
     ) {
       for (const e of object.attestationList) {
         message.attestationList.push(Attestation.fromJSON(e));
+      }
+    }
+    if (
+      object.identifierTypeList !== undefined &&
+      object.identifierTypeList !== null
+    ) {
+      for (const e of object.identifierTypeList) {
+        message.identifierTypeList.push(IdentifierType.fromJSON(e));
       }
     }
     return message;
@@ -79,12 +99,20 @@ export const GenesisState = {
     } else {
       obj.attestationList = [];
     }
+    if (message.identifierTypeList) {
+      obj.identifierTypeList = message.identifierTypeList.map((e) =>
+        e ? IdentifierType.toJSON(e) : undefined
+      );
+    } else {
+      obj.identifierTypeList = [];
+    }
     return obj;
   },
 
   fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.attestationList = [];
+    message.identifierTypeList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -96,6 +124,14 @@ export const GenesisState = {
     ) {
       for (const e of object.attestationList) {
         message.attestationList.push(Attestation.fromPartial(e));
+      }
+    }
+    if (
+      object.identifierTypeList !== undefined &&
+      object.identifierTypeList !== null
+    ) {
+      for (const e of object.identifierTypeList) {
+        message.identifierTypeList.push(IdentifierType.fromPartial(e));
       }
     }
     return message;

@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "truststore/params.proto";
 import "truststore/attestation.proto";
+import "truststore/identifier_type.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/blarsy/truststore/x/truststore/types";
@@ -24,6 +25,16 @@ service Query {
 	// Queries a list of Attestation items.
 	rpc AttestationAll(QueryAllAttestationRequest) returns (QueryAllAttestationResponse) {
 		option (google.api.http).get = "/blarsy/truststore/truststore/attestation";
+	}
+
+// Queries a IdentifierType by index.
+	rpc IdentifierType(QueryGetIdentifierTypeRequest) returns (QueryGetIdentifierTypeResponse) {
+		option (google.api.http).get = "/blarsy/truststore/truststore/identifier_type/{index}";
+	}
+
+	// Queries a list of IdentifierType items.
+	rpc IdentifierTypeAll(QueryAllIdentifierTypeRequest) returns (QueryAllIdentifierTypeResponse) {
+		option (google.api.http).get = "/blarsy/truststore/truststore/identifier_type";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -53,6 +64,24 @@ message QueryAllAttestationRequest {
 
 message QueryAllAttestationResponse {
 	repeated Attestation attestation = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetIdentifierTypeRequest {
+	  string index = 1;
+
+}
+
+message QueryGetIdentifierTypeResponse {
+	IdentifierType identifierType = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllIdentifierTypeRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllIdentifierTypeResponse {
+	repeated IdentifierType identifierType = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

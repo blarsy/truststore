@@ -1,10 +1,11 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
 import { Attestation } from "./module/types/truststore/attestation"
+import { IdentifierType } from "./module/types/truststore/identifier_type"
 import { Params } from "./module/types/truststore/params"
 
 
-export { Attestation, Params };
+export { Attestation, IdentifierType, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -45,9 +46,12 @@ const getDefaultState = () => {
 				Params: {},
 				Attestation: {},
 				AttestationAll: {},
+				IdentifierType: {},
+				IdentifierTypeAll: {},
 				
 				_Structure: {
 						Attestation: getStructure(Attestation.fromPartial({})),
+						IdentifierType: getStructure(IdentifierType.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
 		},
@@ -94,6 +98,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.AttestationAll[JSON.stringify(params)] ?? {}
+		},
+				getIdentifierType: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.IdentifierType[JSON.stringify(params)] ?? {}
+		},
+				getIdentifierTypeAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.IdentifierTypeAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -194,6 +210,54 @@ export default {
 				return getters['getAttestationAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryAttestationAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryIdentifierType({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryIdentifierType( key.index)).data
+				
+					
+				commit('QUERY', { query: 'IdentifierType', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryIdentifierType', payload: { options: { all }, params: {...key},query }})
+				return getters['getIdentifierType']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryIdentifierType API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryIdentifierTypeAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryIdentifierTypeAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryIdentifierTypeAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'IdentifierTypeAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryIdentifierTypeAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getIdentifierTypeAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryIdentifierTypeAll API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},
