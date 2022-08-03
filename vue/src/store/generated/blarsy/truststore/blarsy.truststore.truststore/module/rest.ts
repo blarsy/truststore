@@ -23,8 +23,6 @@ export interface RpcStatus {
 export interface TruststoreAttestation {
   index?: string;
   identifier?: string;
-
-  /** @format uint64 */
   identifierType?: string;
 
   /** @format uint64 */

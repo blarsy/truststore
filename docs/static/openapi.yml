@@ -25,7 +25,6 @@ paths:
                       type: string
                     identifierType:
                       type: string
-                      format: uint64
                     rating:
                       type: string
                       format: uint64
@@ -154,7 +153,6 @@ paths:
                     type: string
                   identifierType:
                     type: string
-                    format: uint64
                   rating:
                     type: string
                     format: uint64
@@ -30768,7 +30766,6 @@ definitions:
         type: string
       identifierType:
         type: string
-        format: uint64
       rating:
         type: string
         format: uint64
@@ -30800,7 +30797,6 @@ definitions:
               type: string
             identifierType:
               type: string
-              format: uint64
             rating:
               type: string
               format: uint64
@@ -30882,7 +30878,6 @@ definitions:
             type: string
           identifierType:
             type: string
-            format: uint64
           rating:
             type: string
             format: uint64

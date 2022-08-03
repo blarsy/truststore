@@ -7,7 +7,7 @@ export const protobufPackage = "blarsy.truststore.truststore";
 export interface Attestation {
   index: string;
   identifier: string;
-  identifierType: number;
+  identifierType: string;
   rating: number;
   creator: string;
 }
@@ -15,7 +15,7 @@ export interface Attestation {
 const baseAttestation: object = {
   index: "",
   identifier: "",
-  identifierType: 0,
+  identifierType: "",
   rating: 0,
   creator: "",
 };
@@ -28,8 +28,8 @@ export const Attestation = {
     if (message.identifier !== "") {
       writer.uint32(18).string(message.identifier);
     }
-    if (message.identifierType !== 0) {
-      writer.uint32(24).uint64(message.identifierType);
+    if (message.identifierType !== "") {
+      writer.uint32(26).string(message.identifierType);
     }
     if (message.rating !== 0) {
       writer.uint32(32).uint64(message.rating);
@@ -54,7 +54,7 @@ export const Attestation = {
           message.identifier = reader.string();
           break;
         case 3:
-          message.identifierType = longToNumber(reader.uint64() as Long);
+          message.identifierType = reader.string();
           break;
         case 4:
           message.rating = longToNumber(reader.uint64() as Long);
@@ -83,9 +83,9 @@ export const Attestation = {
       message.identifier = "";
     }
     if (object.identifierType !== undefined && object.identifierType !== null) {
-      message.identifierType = Number(object.identifierType);
+      message.identifierType = String(object.identifierType);
     } else {
-      message.identifierType = 0;
+      message.identifierType = "";
     }
     if (object.rating !== undefined && object.rating !== null) {
       message.rating = Number(object.rating);
@@ -126,7 +126,7 @@ export const Attestation = {
     if (object.identifierType !== undefined && object.identifierType !== null) {
       message.identifierType = object.identifierType;
     } else {
-      message.identifierType = 0;
+      message.identifierType = "";
     }
     if (object.rating !== undefined && object.rating !== null) {
       message.rating = object.rating;
