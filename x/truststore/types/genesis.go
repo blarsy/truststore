@@ -17,6 +17,7 @@ func DefaultGenesis() *GenesisState {
 			{"3", "facebook", "Facebook handle"},
 			{"4", "mobile", "Mobile phone number"},
 		},
+		Global: &Global{NextId: 1},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}

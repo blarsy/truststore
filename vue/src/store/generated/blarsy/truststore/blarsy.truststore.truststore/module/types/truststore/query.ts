@@ -7,6 +7,7 @@ import {
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
 import { IdentifierType } from "../truststore/identifier_type";
+import { Global } from "../truststore/global";
 
 export const protobufPackage = "blarsy.truststore.truststore";
 
@@ -51,6 +52,12 @@ export interface QueryAllIdentifierTypeRequest {
 export interface QueryAllIdentifierTypeResponse {
   identifierType: IdentifierType[];
   pagination: PageResponse | undefined;
+}
+
+export interface QueryGetGlobalRequest {}
+
+export interface QueryGetGlobalResponse {
+  Global: Global | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -791,6 +798,105 @@ export const QueryAllIdentifierTypeResponse = {
   },
 };
 
+const baseQueryGetGlobalRequest: object = {};
+
+export const QueryGetGlobalRequest = {
+  encode(_: QueryGetGlobalRequest, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetGlobalRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetGlobalRequest } as QueryGetGlobalRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetGlobalRequest {
+    const message = { ...baseQueryGetGlobalRequest } as QueryGetGlobalRequest;
+    return message;
+  },
+
+  toJSON(_: QueryGetGlobalRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<QueryGetGlobalRequest>): QueryGetGlobalRequest {
+    const message = { ...baseQueryGetGlobalRequest } as QueryGetGlobalRequest;
+    return message;
+  },
+};
+
+const baseQueryGetGlobalResponse: object = {};
+
+export const QueryGetGlobalResponse = {
+  encode(
+    message: QueryGetGlobalResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.Global !== undefined) {
+      Global.encode(message.Global, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetGlobalResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetGlobalResponse } as QueryGetGlobalResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.Global = Global.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetGlobalResponse {
+    const message = { ...baseQueryGetGlobalResponse } as QueryGetGlobalResponse;
+    if (object.Global !== undefined && object.Global !== null) {
+      message.Global = Global.fromJSON(object.Global);
+    } else {
+      message.Global = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetGlobalResponse): unknown {
+    const obj: any = {};
+    message.Global !== undefined &&
+      (obj.Global = message.Global ? Global.toJSON(message.Global) : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetGlobalResponse>
+  ): QueryGetGlobalResponse {
+    const message = { ...baseQueryGetGlobalResponse } as QueryGetGlobalResponse;
+    if (object.Global !== undefined && object.Global !== null) {
+      message.Global = Global.fromPartial(object.Global);
+    } else {
+      message.Global = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -811,6 +917,8 @@ export interface Query {
   IdentifierTypeAll(
     request: QueryAllIdentifierTypeRequest
   ): Promise<QueryAllIdentifierTypeResponse>;
+  /** Queries a Global by index. */
+  Global(request: QueryGetGlobalRequest): Promise<QueryGetGlobalResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -881,6 +989,18 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllIdentifierTypeResponse.decode(new Reader(data))
+    );
+  }
+
+  Global(request: QueryGetGlobalRequest): Promise<QueryGetGlobalResponse> {
+    const data = QueryGetGlobalRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "blarsy.truststore.truststore.Query",
+      "Global",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetGlobalResponse.decode(new Reader(data))
     );
   }
 }

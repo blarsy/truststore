@@ -30,6 +30,11 @@ export interface TruststoreAttestation {
   creator?: string;
 }
 
+export interface TruststoreGlobal {
+  /** @format uint64 */
+  nextId?: string;
+}
+
 export interface TruststoreIdentifierType {
   index?: string;
   name?: string;
@@ -77,6 +82,10 @@ export interface TruststoreQueryAllIdentifierTypeResponse {
 
 export interface TruststoreQueryGetAttestationResponse {
   attestation?: TruststoreAttestation;
+}
+
+export interface TruststoreQueryGetGlobalResponse {
+  Global?: TruststoreGlobal;
 }
 
 export interface TruststoreQueryGetIdentifierTypeResponse {
@@ -128,6 +137,13 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
 }
 
 /**
@@ -357,6 +373,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -388,6 +405,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryGlobal
+   * @summary Queries a Global by index.
+   * @request GET:/blarsy/truststore/truststore/global
+   */
+  queryGlobal = (params: RequestParams = {}) =>
+    this.request<TruststoreQueryGetGlobalResponse, RpcStatus>({
+      path: `/blarsy/truststore/truststore/global`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryIdentifierTypeAll
    * @summary Queries a list of IdentifierType items.
    * @request GET:/blarsy/truststore/truststore/identifier_type
@@ -398,6 +431,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>

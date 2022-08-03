@@ -2,6 +2,7 @@
 import { Params } from "../truststore/params";
 import { Attestation } from "../truststore/attestation";
 import { IdentifierType } from "../truststore/identifier_type";
+import { Global } from "../truststore/global";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "blarsy.truststore.truststore";
@@ -10,8 +11,9 @@ export const protobufPackage = "blarsy.truststore.truststore";
 export interface GenesisState {
   params: Params | undefined;
   attestationList: Attestation[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   identifierTypeList: IdentifierType[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  global: Global | undefined;
 }
 
 const baseGenesisState: object = {};
@@ -26,6 +28,9 @@ export const GenesisState = {
     }
     for (const v of message.identifierTypeList) {
       IdentifierType.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.global !== undefined) {
+      Global.encode(message.global, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -51,6 +56,9 @@ export const GenesisState = {
           message.identifierTypeList.push(
             IdentifierType.decode(reader, reader.uint32())
           );
+          break;
+        case 4:
+          message.global = Global.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -85,6 +93,11 @@ export const GenesisState = {
         message.identifierTypeList.push(IdentifierType.fromJSON(e));
       }
     }
+    if (object.global !== undefined && object.global !== null) {
+      message.global = Global.fromJSON(object.global);
+    } else {
+      message.global = undefined;
+    }
     return message;
   },
 
@@ -106,6 +119,8 @@ export const GenesisState = {
     } else {
       obj.identifierTypeList = [];
     }
+    message.global !== undefined &&
+      (obj.global = message.global ? Global.toJSON(message.global) : undefined);
     return obj;
   },
 
@@ -133,6 +148,11 @@ export const GenesisState = {
       for (const e of object.identifierTypeList) {
         message.identifierTypeList.push(IdentifierType.fromPartial(e));
       }
+    }
+    if (object.global !== undefined && object.global !== null) {
+      message.global = Global.fromPartial(object.global);
+    } else {
+      message.global = undefined;
     }
     return message;
   },

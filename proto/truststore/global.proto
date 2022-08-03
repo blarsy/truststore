@@ -1,0 +1,9 @@
+syntax = "proto3";
+package blarsy.truststore.truststore;
+
+option go_package = "github.com/blarsy/truststore/x/truststore/types";
+
+message Global {
+  uint64 nextId = 1; 
+  
+}

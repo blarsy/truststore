@@ -30,6 +30,9 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
+		Global: &types.Global{
+			NextId: 64,
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -43,5 +46,6 @@ func TestGenesis(t *testing.T) {
 
 	require.ElementsMatch(t, genesisState.AttestationList, got.AttestationList)
 	require.ElementsMatch(t, genesisState.IdentifierTypeList, got.IdentifierTypeList)
+	require.Equal(t, genesisState.Global, got.Global)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

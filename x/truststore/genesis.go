@@ -17,6 +17,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.IdentifierTypeList {
 		k.SetIdentifierType(ctx, elem)
 	}
+	// Set if defined
+	if genState.Global != nil {
+		k.SetGlobal(ctx, *genState.Global)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -28,6 +32,11 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.AttestationList = k.GetAllAttestation(ctx)
 	genesis.IdentifierTypeList = k.GetAllIdentifierType(ctx)
+	// Get all global
+	global, found := k.GetGlobal(ctx)
+	if found {
+		genesis.Global = &global
+	}
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "truststore/params.proto";
 import "truststore/attestation.proto";
 import "truststore/identifier_type.proto";
+import "truststore/global.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/blarsy/truststore/x/truststore/types";
@@ -14,5 +15,6 @@ message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   repeated Attestation attestationList = 2 [(gogoproto.nullable) = false];
   repeated IdentifierType identifierTypeList = 3 [(gogoproto.nullable) = false];
+  Global global = 4;
   // this line is used by starport scaffolding # genesis/proto/state
 }

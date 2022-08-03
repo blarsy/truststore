@@ -1,11 +1,12 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
 import { Attestation } from "./module/types/truststore/attestation"
+import { Global } from "./module/types/truststore/global"
 import { IdentifierType } from "./module/types/truststore/identifier_type"
 import { Params } from "./module/types/truststore/params"
 
 
-export { Attestation, IdentifierType, Params };
+export { Attestation, Global, IdentifierType, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -48,9 +49,11 @@ const getDefaultState = () => {
 				AttestationAll: {},
 				IdentifierType: {},
 				IdentifierTypeAll: {},
+				Global: {},
 				
 				_Structure: {
 						Attestation: getStructure(Attestation.fromPartial({})),
+						Global: getStructure(Global.fromPartial({})),
 						IdentifierType: getStructure(IdentifierType.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
@@ -110,6 +113,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.IdentifierTypeAll[JSON.stringify(params)] ?? {}
+		},
+				getGlobal: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Global[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -258,6 +267,28 @@ export default {
 				return getters['getIdentifierTypeAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryIdentifierTypeAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryGlobal({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryGlobal()).data
+				
+					
+				commit('QUERY', { query: 'Global', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryGlobal', payload: { options: { all }, params: {...key},query }})
+				return getters['getGlobal']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryGlobal API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},
