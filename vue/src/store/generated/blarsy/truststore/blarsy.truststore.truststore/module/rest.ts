@@ -36,6 +36,10 @@ export interface TruststoreIdentifierType {
   description?: string;
 }
 
+export interface TruststoreMsgCreateAttestationResponse {
+  idValue?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */

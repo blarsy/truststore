@@ -122,16 +122,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/blarsy/truststore/truststore/attestation/{index}':
@@ -293,16 +283,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -30779,6 +30759,11 @@ definitions:
       name:
         type: string
       description:
+        type: string
+  blarsy.truststore.truststore.MsgCreateAttestationResponse:
+    type: object
+    properties:
+      idValue:
         type: string
   blarsy.truststore.truststore.Params:
     type: object
