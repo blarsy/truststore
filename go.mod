@@ -6,6 +6,7 @@ require (
 	github.com/cosmos/cosmos-sdk v0.45.5
 	github.com/cosmos/ibc-go/v3 v3.0.1
 	github.com/gogo/protobuf v1.3.3
+	github.com/golang/mock v1.6.0
 	github.com/golang/protobuf v1.5.2
 	github.com/gorilla/mux v1.8.0
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
@@ -16,7 +17,7 @@ require (
 	github.com/tendermint/spn v0.2.1-0.20220708132853-26a17f03c072
 	github.com/tendermint/tendermint v0.34.19
 	github.com/tendermint/tm-db v0.6.7
-	google.golang.org/genproto v0.0.0-20220728213248-dd149ef739b9
+	google.golang.org/genproto v0.0.0-20220805133916-01dd62135a58
 	google.golang.org/grpc v1.48.0
 	gopkg.in/yaml.v2 v2.4.0
 )
