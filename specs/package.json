@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "start": "cucumber-js"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^7.0.0",
+    "@types/assert": "^1.5.6",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "assert": "^2.0.0"
+  }
+}

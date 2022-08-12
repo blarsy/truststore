@@ -5,13 +5,13 @@ Feature: Make attestations
     I want to provide attestations about rated I have already been in contact with
 
 Background: Current data
-Given We are the 2022-08-10T13:00+00Z
+Given we are the 2022-08-10T13:00+00Z
 
 Scenario: Create a first attestation
 Given I have a Cosmos portfolio
 When I give a rating of 4 to the rated with email theguy@company.com
-Then The attestation is created
-And My account is debited with 100 gas tokens
+Then the attestation is created
+And my account is debited with 100 gas tokens
 
 Scenario: Modify a recently created attestation
 Given attestations I created

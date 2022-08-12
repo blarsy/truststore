@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "esModuleInterop": true
+        //"allowJs": true
+    },
+    "include": ["./**/*.ts"],
+    "exclude": ["node_modules"]
+}
