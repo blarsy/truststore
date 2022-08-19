@@ -199,6 +199,8 @@ paths:
                   nextId:
                     type: string
                     format: uint64
+                  chainId:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -30813,6 +30815,8 @@ definitions:
       nextId:
         type: string
         format: uint64
+      chainId:
+        type: string
   blarsy.truststore.truststore.IdentifierType:
     type: object
     properties:
@@ -30939,6 +30943,8 @@ definitions:
           nextId:
             type: string
             format: uint64
+          chainId:
+            type: string
   blarsy.truststore.truststore.QueryGetIdentifierTypeResponse:
     type: object
     properties:

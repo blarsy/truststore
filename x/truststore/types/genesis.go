@@ -10,14 +10,9 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		AttestationList: []Attestation{},
-		IdentifierTypeList: []IdentifierType{
-			{"1", "email", "Email address"},
-			{"2", "twitter", "Twitter handle"},
-			{"3", "facebook", "Facebook handle"},
-			{"4", "mobile", "Mobile phone number"},
-		},
-		Global: &Global{NextId: 1},
+		AttestationList:    []Attestation{},
+		IdentifierTypeList: []IdentifierType{},
+		Global:             &Global{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}

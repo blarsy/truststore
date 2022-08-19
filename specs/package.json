@@ -8,6 +8,7 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
+    "@types/node": "^18.7.3",
     "assert": "^2.0.0"
   }
 }

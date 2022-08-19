@@ -14,3 +14,23 @@ client:
 faucet:
   name: bob
   coins: ["5token", "100000stake"]
+genesis:
+  chain_id: "local-ci"
+  app_state:
+    truststore:
+      attestationList: []
+      global:
+        nextId: 1
+      identifierTypeList: 
+        - description: "Email address"
+          index: "1"
+          name: "email"
+        - description: "Twitter handle"
+          index: "2"
+          name: "twitter"
+        - description: "Facebook handle"
+          index: "3"
+          name: "facebook"
+        - description: "Mobile phone number"
+          index: "4"
+          name: "mobile"
