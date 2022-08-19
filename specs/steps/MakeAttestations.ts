@@ -1,15 +1,13 @@
-import assert from "assert"
-
-import { Given, When, Then } from '@cucumber/cucumber'
+import { Given, When, Then, AfterAll, BeforeAll } from '@cucumber/cucumber'
 import { writeFile } from 'node:fs/promises'
 import { exec } from 'node:child_process'
 
 //const accountName = 'ciUser'
-const accountName = 'alice'
+const accountName = 'bob'
+const chainId = 'local-ci'
 
 const executeProcess = (cmd: string, analyzer: (output: string)=>(void), verbose = false) => {
     let output = '', error = ''
-    console.log(`Verbose is ${verbose}\n`)
     return new Promise(async (resolve, reject) => {
         if(verbose) console.log(`Executing command ${cmd}\n`)
         const process = await exec(cmd)
@@ -40,10 +38,10 @@ const executeProcess = (cmd: string, analyzer: (output: string)=>(void), verbose
     })
 }
 
-Given('we are the {}', (isoDate: string) => {
-    const date = new Date(isoDate)
-    return writeFile('../date.txt', isoDate)
+BeforeAll(() => {
+    return executeProcess(`truststored config chain-id ${chainId}`, () => {}, true)
 })
+
 Given('I have a Cosmos portfolio', () => {
     return executeProcess('truststored keys list', async output => {
         const portfolioExists = new RegExp('- name: ' + accountName).test(output)
@@ -68,7 +66,7 @@ Given('I have a Cosmos portfolio', () => {
 })
 
 When('I give a rating of {int} to the rated with email {}', (rating: number, email: string) => {
-    return executeProcess(`truststored tx truststore create-attestation ${email} 1 ${rating} --from ${accountName} --yes --node http://0.0.0.0:26657`, output => {}, true)
+    return executeProcess(`truststored tx truststore create-attestation ${email} 1 ${rating} --from ${accountName} --yes --node http://0.0.0.0:26657`, output => {})
 })
 
 Then('my account is debited with {int} gas tokens', (gasTokenDebited: number) => {
