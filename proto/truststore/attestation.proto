@@ -11,3 +11,10 @@ message Attestation {
   string creator = 5;
 }
 
+message Ids {
+  repeated string indexes = 1;
+}
+
+message AttestationIdsByCreator {
+  map<string , Ids> ids = 1;
+}

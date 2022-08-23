@@ -5,10 +5,10 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "truststore/params.proto";
-import "truststore/attestation.proto";
 import "truststore/identifier_type.proto";
 import "truststore/global.proto";
 // this line is used by starport scaffolding # 1
+import "truststore/attestation.proto";
 
 option go_package = "github.com/blarsy/truststore/x/truststore/types";
 
@@ -42,6 +42,11 @@ service Query {
 	rpc Global(QueryGetGlobalRequest) returns (QueryGetGlobalResponse) {
 		option (google.api.http).get = "/blarsy/truststore/truststore/global";
 	}
+// Queries a list of AttestationByCreatorIdentifier items.
+	rpc AttestationByCreatorIdentifier(QueryAttestationByCreatorIdentifierRequest) returns (QueryAttestationByCreatorIdentifierResponse) {
+		option (google.api.http).get = "/blarsy/truststore/truststore/attestation_by_creator_identifier/{creator}/{identifierType}/{identifier}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -95,4 +100,14 @@ message QueryGetGlobalRequest {}
 message QueryGetGlobalResponse {
 	Global Global = 1 [(gogoproto.nullable) = false];
 }
+message QueryAttestationByCreatorIdentifierRequest {
+  string creator = 1;
+  string identifierType = 2;
+  string identifier = 3;
+}
+
+message QueryAttestationByCreatorIdentifierResponse {
+  Attestation attestation = 1;
+}
+
 // this line is used by starport scaffolding # 3

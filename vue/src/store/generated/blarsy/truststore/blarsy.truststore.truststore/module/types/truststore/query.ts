@@ -60,6 +60,16 @@ export interface QueryGetGlobalResponse {
   Global: Global | undefined;
 }
 
+export interface QueryAttestationByCreatorIdentifierRequest {
+  creator: string;
+  identifierType: string;
+  identifier: string;
+}
+
+export interface QueryAttestationByCreatorIdentifierResponse {
+  attestation: Attestation | undefined;
+}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -897,6 +907,189 @@ export const QueryGetGlobalResponse = {
   },
 };
 
+const baseQueryAttestationByCreatorIdentifierRequest: object = {
+  creator: "",
+  identifierType: "",
+  identifier: "",
+};
+
+export const QueryAttestationByCreatorIdentifierRequest = {
+  encode(
+    message: QueryAttestationByCreatorIdentifierRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.identifierType !== "") {
+      writer.uint32(18).string(message.identifierType);
+    }
+    if (message.identifier !== "") {
+      writer.uint32(26).string(message.identifier);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAttestationByCreatorIdentifierRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAttestationByCreatorIdentifierRequest,
+    } as QueryAttestationByCreatorIdentifierRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.identifierType = reader.string();
+          break;
+        case 3:
+          message.identifier = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAttestationByCreatorIdentifierRequest {
+    const message = {
+      ...baseQueryAttestationByCreatorIdentifierRequest,
+    } as QueryAttestationByCreatorIdentifierRequest;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.identifierType !== undefined && object.identifierType !== null) {
+      message.identifierType = String(object.identifierType);
+    } else {
+      message.identifierType = "";
+    }
+    if (object.identifier !== undefined && object.identifier !== null) {
+      message.identifier = String(object.identifier);
+    } else {
+      message.identifier = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAttestationByCreatorIdentifierRequest): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.identifierType !== undefined &&
+      (obj.identifierType = message.identifierType);
+    message.identifier !== undefined && (obj.identifier = message.identifier);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAttestationByCreatorIdentifierRequest>
+  ): QueryAttestationByCreatorIdentifierRequest {
+    const message = {
+      ...baseQueryAttestationByCreatorIdentifierRequest,
+    } as QueryAttestationByCreatorIdentifierRequest;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.identifierType !== undefined && object.identifierType !== null) {
+      message.identifierType = object.identifierType;
+    } else {
+      message.identifierType = "";
+    }
+    if (object.identifier !== undefined && object.identifier !== null) {
+      message.identifier = object.identifier;
+    } else {
+      message.identifier = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryAttestationByCreatorIdentifierResponse: object = {};
+
+export const QueryAttestationByCreatorIdentifierResponse = {
+  encode(
+    message: QueryAttestationByCreatorIdentifierResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.attestation !== undefined) {
+      Attestation.encode(
+        message.attestation,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAttestationByCreatorIdentifierResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAttestationByCreatorIdentifierResponse,
+    } as QueryAttestationByCreatorIdentifierResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.attestation = Attestation.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAttestationByCreatorIdentifierResponse {
+    const message = {
+      ...baseQueryAttestationByCreatorIdentifierResponse,
+    } as QueryAttestationByCreatorIdentifierResponse;
+    if (object.attestation !== undefined && object.attestation !== null) {
+      message.attestation = Attestation.fromJSON(object.attestation);
+    } else {
+      message.attestation = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAttestationByCreatorIdentifierResponse): unknown {
+    const obj: any = {};
+    message.attestation !== undefined &&
+      (obj.attestation = message.attestation
+        ? Attestation.toJSON(message.attestation)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAttestationByCreatorIdentifierResponse>
+  ): QueryAttestationByCreatorIdentifierResponse {
+    const message = {
+      ...baseQueryAttestationByCreatorIdentifierResponse,
+    } as QueryAttestationByCreatorIdentifierResponse;
+    if (object.attestation !== undefined && object.attestation !== null) {
+      message.attestation = Attestation.fromPartial(object.attestation);
+    } else {
+      message.attestation = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -919,6 +1112,10 @@ export interface Query {
   ): Promise<QueryAllIdentifierTypeResponse>;
   /** Queries a Global by index. */
   Global(request: QueryGetGlobalRequest): Promise<QueryGetGlobalResponse>;
+  /** Queries a list of AttestationByCreatorIdentifier items. */
+  AttestationByCreatorIdentifier(
+    request: QueryAttestationByCreatorIdentifierRequest
+  ): Promise<QueryAttestationByCreatorIdentifierResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1001,6 +1198,22 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryGetGlobalResponse.decode(new Reader(data))
+    );
+  }
+
+  AttestationByCreatorIdentifier(
+    request: QueryAttestationByCreatorIdentifierRequest
+  ): Promise<QueryAttestationByCreatorIdentifierResponse> {
+    const data = QueryAttestationByCreatorIdentifierRequest.encode(
+      request
+    ).finish();
+    const promise = this.rpc.request(
+      "blarsy.truststore.truststore.Query",
+      "AttestationByCreatorIdentifier",
+      data
+    );
+    return promise.then((data) =>
+      QueryAttestationByCreatorIdentifierResponse.decode(new Reader(data))
     );
   }
 }

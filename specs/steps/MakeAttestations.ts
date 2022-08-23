@@ -1,10 +1,20 @@
-import { Given, When, Then, AfterAll, BeforeAll } from '@cucumber/cucumber'
-import { writeFile } from 'node:fs/promises'
+import { Given, When, Then, BeforeAll } from '@cucumber/cucumber'
+import axios from 'axios'
 import { exec } from 'node:child_process'
+import assert from 'assert'
 
 //const accountName = 'ciUser'
 const accountName = 'bob'
+let accountAddress: string
 const chainId = 'local-ci'
+let lastCreatedAttestationData: {
+    rating: number,
+    email: string,
+    creator: string
+}
+let initialCoinOnAccount: number
+const feeCoinDenom = 'token'
+const fee = 10
 
 const executeProcess = (cmd: string, analyzer: (output: string)=>(void), verbose = false) => {
     let output = '', error = ''
@@ -37,9 +47,30 @@ const executeProcess = (cmd: string, analyzer: (output: string)=>(void), verbose
         })
     })
 }
+const getAccountBalance = async (coinDenom: string, accountAddress: string): Promise<number> => {
+    let amountFound: number
+    await executeProcess(`truststored query bank balances ${accountAddress} --node http://0.0.0.0:26657`, output => {
+        const matches = new RegExp(`- amount: "(\\d+)"\\n  denom: ${feeCoinDenom}`).exec(output)
+        if(matches.length > 0){
+            amountFound = parseInt(matches[1])
+        } else {
+            throw  new Error(`could not determine initial amount of ${feeCoinDenom} from account ${accountName}`)
+        }
+    })
+    return amountFound
+}
 
-BeforeAll(() => {
-    return executeProcess(`truststored config chain-id ${chainId}`, () => {}, true)
+BeforeAll( async() => {
+    await executeProcess(`truststored keys show ${accountName}`, output => {
+        const matches = new RegExp('  address: (.*)', 'm').exec(output)
+        if(matches.length > 0){
+            accountAddress = matches[1]
+        } else {
+            throw  new Error(`address of ${accountName} not found`)
+        }
+    })
+    initialCoinOnAccount = await getAccountBalance(feeCoinDenom, accountAddress)
+    return executeProcess(`truststored config chain-id ${chainId}`, () => {})
 })
 
 Given('I have a Cosmos portfolio', () => {
@@ -66,11 +97,25 @@ Given('I have a Cosmos portfolio', () => {
 })
 
 When('I give a rating of {int} to the rated with email {}', (rating: number, email: string) => {
-    return executeProcess(`truststored tx truststore create-attestation ${email} 1 ${rating} --from ${accountName} --yes --node http://0.0.0.0:26657`, output => {})
+    lastCreatedAttestationData = {
+        rating, email, creator: accountName
+    }
+    return executeProcess(`truststored tx truststore create-attestation ${email} 1 ${rating} --from ${accountName} --yes --node http://0.0.0.0:26657 --fees ${fee}${feeCoinDenom}`, output => {})
 })
 
-Then('my account is debited with {int} gas tokens', (gasTokenDebited: number) => {
-    return 'pending'
+Then('the attestation is created', async () => {
+    const res = await axios.get(`http://0.0.0.0:1317/blarsy/truststore/truststore/attestation_by_creator_identifier/${accountAddress}/1/${lastCreatedAttestationData.email}`)
+    assert.equal(res.status, 200, `Success status code 200 expected, got ${res.status}`)
+    const savedAttestation = res.data.attestation
+    assert(savedAttestation.rating, lastCreatedAttestationData.rating.toString())
+    assert(savedAttestation.identifier, lastCreatedAttestationData.email)
+    assert(savedAttestation.identifierType, "1")
+    assert(savedAttestation.creator, accountAddress)
+})
+
+Then('my account is debited by some gas tokens', async () => {
+    const newBalance = await getAccountBalance(feeCoinDenom, accountAddress)
+    assert.equal(newBalance, initialCoinOnAccount - fee)
 })
 
 Given('attestations I created', datatable => {
@@ -78,10 +123,6 @@ Given('attestations I created', datatable => {
 })
 
 Given("my portfolio has {int} gas in it", (gasInPortfolio: number) => {
-    return 'pending'
-})
-
-Then('the attestation is created', () => {
     return 'pending'
 })
 

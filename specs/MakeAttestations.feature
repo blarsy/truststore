@@ -10,12 +10,12 @@ Given I have a Cosmos portfolio
 Scenario: Create a first attestation
 When I give a rating of 4 to the rated with email theguy@company.com
 Then the attestation is created
-And my account is debited with 100 gas tokens
+And my account is debited by some gas tokens
 
 Scenario: Fail to create a duplicate attestation
 Given attestations I created
-| Identifier type   | Identifier            | Rating    | Time created          |
-| 1                 | theguy@company.com    | 4         | 2022-08-01T13:00+00Z  |
+| Identifier type   | Identifier            | Rating    |
+| 1                 | theguy@company.com    | 4         |
 When I give a rating of 3 to the rated with email theguy@company.com
 Then the operation fails
 

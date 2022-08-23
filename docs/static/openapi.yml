@@ -183,6 +183,63 @@ paths:
           type: string
       tags:
         - Query
+  '/blarsy/truststore/truststore/attestation_by_creator_identifier/{creator}/{identifierType}/{identifier}':
+    get:
+      summary: Queries a list of AttestationByCreatorIdentifier items.
+      operationId: BlarsyTruststoreTruststoreAttestationByCreatorIdentifier
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              attestation:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  identifier:
+                    type: string
+                  identifierType:
+                    type: string
+                  rating:
+                    type: string
+                    format: uint64
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: creator
+          in: path
+          required: true
+          type: string
+        - name: identifierType
+          in: path
+          required: true
+          type: string
+        - name: identifier
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /blarsy/truststore/truststore/global:
     get:
       summary: Queries a Global by index.
@@ -30913,6 +30970,23 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  blarsy.truststore.truststore.QueryAttestationByCreatorIdentifierResponse:
+    type: object
+    properties:
+      attestation:
+        type: object
+        properties:
+          index:
+            type: string
+          identifier:
+            type: string
+          identifierType:
+            type: string
+          rating:
+            type: string
+            format: uint64
+          creator:
+            type: string
   blarsy.truststore.truststore.QueryGetAttestationResponse:
     type: object
     properties:

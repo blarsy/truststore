@@ -1,12 +1,14 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
 import { Attestation } from "./module/types/truststore/attestation"
+import { Ids } from "./module/types/truststore/attestation"
+import { AttestationIdsByCreator } from "./module/types/truststore/attestation"
 import { Global } from "./module/types/truststore/global"
 import { IdentifierType } from "./module/types/truststore/identifier_type"
 import { Params } from "./module/types/truststore/params"
 
 
-export { Attestation, Global, IdentifierType, Params };
+export { Attestation, Ids, AttestationIdsByCreator, Global, IdentifierType, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -50,9 +52,12 @@ const getDefaultState = () => {
 				IdentifierType: {},
 				IdentifierTypeAll: {},
 				Global: {},
+				AttestationByCreatorIdentifier: {},
 				
 				_Structure: {
 						Attestation: getStructure(Attestation.fromPartial({})),
+						Ids: getStructure(Ids.fromPartial({})),
+						AttestationIdsByCreator: getStructure(AttestationIdsByCreator.fromPartial({})),
 						Global: getStructure(Global.fromPartial({})),
 						IdentifierType: getStructure(IdentifierType.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
@@ -119,6 +124,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.Global[JSON.stringify(params)] ?? {}
+		},
+				getAttestationByCreatorIdentifier: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.AttestationByCreatorIdentifier[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -289,6 +300,28 @@ export default {
 				return getters['getGlobal']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryGlobal API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryAttestationByCreatorIdentifier({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryAttestationByCreatorIdentifier( key.creator,  key.identifierType,  key.identifier)).data
+				
+					
+				commit('QUERY', { query: 'AttestationByCreatorIdentifier', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAttestationByCreatorIdentifier', payload: { options: { all }, params: {...key},query }})
+				return getters['getAttestationByCreatorIdentifier']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryAttestationByCreatorIdentifier API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

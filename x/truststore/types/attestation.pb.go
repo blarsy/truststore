@@ -98,28 +98,126 @@ func (m *Attestation) GetCreator() string {
 	return ""
 }
 
+type Ids struct {
+	Indexes []string `protobuf:"bytes,1,rep,name=indexes,proto3" json:"indexes,omitempty"`
+}
+
+func (m *Ids) Reset()         { *m = Ids{} }
+func (m *Ids) String() string { return proto.CompactTextString(m) }
+func (*Ids) ProtoMessage()    {}
+func (*Ids) Descriptor() ([]byte, []int) {
+	return fileDescriptor_6dac20ad163002e1, []int{1}
+}
+func (m *Ids) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Ids) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Ids.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Ids) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Ids.Merge(m, src)
+}
+func (m *Ids) XXX_Size() int {
+	return m.Size()
+}
+func (m *Ids) XXX_DiscardUnknown() {
+	xxx_messageInfo_Ids.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Ids proto.InternalMessageInfo
+
+func (m *Ids) GetIndexes() []string {
+	if m != nil {
+		return m.Indexes
+	}
+	return nil
+}
+
+type AttestationIdsByCreator struct {
+	Ids map[string]*Ids `protobuf:"bytes,1,rep,name=ids,proto3" json:"ids,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (m *AttestationIdsByCreator) Reset()         { *m = AttestationIdsByCreator{} }
+func (m *AttestationIdsByCreator) String() string { return proto.CompactTextString(m) }
+func (*AttestationIdsByCreator) ProtoMessage()    {}
+func (*AttestationIdsByCreator) Descriptor() ([]byte, []int) {
+	return fileDescriptor_6dac20ad163002e1, []int{2}
+}
+func (m *AttestationIdsByCreator) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *AttestationIdsByCreator) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_AttestationIdsByCreator.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *AttestationIdsByCreator) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AttestationIdsByCreator.Merge(m, src)
+}
+func (m *AttestationIdsByCreator) XXX_Size() int {
+	return m.Size()
+}
+func (m *AttestationIdsByCreator) XXX_DiscardUnknown() {
+	xxx_messageInfo_AttestationIdsByCreator.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AttestationIdsByCreator proto.InternalMessageInfo
+
+func (m *AttestationIdsByCreator) GetIds() map[string]*Ids {
+	if m != nil {
+		return m.Ids
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*Attestation)(nil), "blarsy.truststore.truststore.Attestation")
+	proto.RegisterType((*Ids)(nil), "blarsy.truststore.truststore.Ids")
+	proto.RegisterType((*AttestationIdsByCreator)(nil), "blarsy.truststore.truststore.AttestationIdsByCreator")
+	proto.RegisterMapType((map[string]*Ids)(nil), "blarsy.truststore.truststore.AttestationIdsByCreator.IdsEntry")
 }
 
 func init() { proto.RegisterFile("truststore/attestation.proto", fileDescriptor_6dac20ad163002e1) }
 
 var fileDescriptor_6dac20ad163002e1 = []byte{
-	// 223 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x29, 0x29, 0x2a, 0x2d,
-	0x2e, 0x29, 0x2e, 0xc9, 0x2f, 0x4a, 0xd5, 0x4f, 0x2c, 0x29, 0x49, 0x2d, 0x2e, 0x49, 0x2c, 0xc9,
-	0xcc, 0xcf, 0xd3, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92, 0x49, 0xca, 0x49, 0x2c, 0x2a, 0xae,
-	0xd4, 0x43, 0x28, 0x42, 0x62, 0x2a, 0xcd, 0x65, 0xe4, 0xe2, 0x76, 0x44, 0xe8, 0x11, 0x12, 0xe1,
-	0x62, 0xcd, 0xcc, 0x4b, 0x49, 0xad, 0x90, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x82, 0x70, 0x84,
-	0xe4, 0xb8, 0xb8, 0x32, 0x53, 0x52, 0xf3, 0x4a, 0x32, 0xd3, 0x32, 0x53, 0x8b, 0x24, 0x98, 0xc0,
-	0x52, 0x48, 0x22, 0x42, 0x6a, 0x5c, 0x7c, 0x08, 0x5e, 0x48, 0x65, 0x41, 0xaa, 0x04, 0x33, 0x58,
-	0x0d, 0x9a, 0xa8, 0x90, 0x18, 0x17, 0x5b, 0x51, 0x62, 0x49, 0x66, 0x5e, 0xba, 0x04, 0x8b, 0x02,
-	0xa3, 0x06, 0x4b, 0x10, 0x94, 0x27, 0x24, 0xc1, 0xc5, 0x9e, 0x5c, 0x94, 0x9a, 0x58, 0x92, 0x5f,
-	0x24, 0xc1, 0x0a, 0xd6, 0x08, 0xe3, 0x3a, 0x79, 0x9e, 0x78, 0x24, 0xc7, 0x78, 0xe1, 0x91, 0x1c,
-	0xe3, 0x83, 0x47, 0x72, 0x8c, 0x13, 0x1e, 0xcb, 0x31, 0x5c, 0x78, 0x2c, 0xc7, 0x70, 0xe3, 0xb1,
-	0x1c, 0x43, 0x94, 0x7e, 0x7a, 0x66, 0x49, 0x46, 0x69, 0x92, 0x5e, 0x72, 0x7e, 0xae, 0x3e, 0xc4,
-	0x8b, 0xfa, 0x48, 0xe1, 0x50, 0x81, 0xcc, 0x29, 0xa9, 0x2c, 0x48, 0x2d, 0x4e, 0x62, 0x03, 0x87,
-	0x87, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0x8f, 0x3a, 0x18, 0x44, 0x2f, 0x01, 0x00, 0x00,
+	// 327 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x91, 0xc1, 0x4a, 0x03, 0x31,
+	0x10, 0x86, 0x9b, 0x6e, 0x5b, 0x75, 0x0a, 0x22, 0x41, 0x34, 0x48, 0x89, 0xb5, 0x07, 0xe9, 0x69,
+	0x17, 0xea, 0x41, 0xf1, 0x20, 0x58, 0xf1, 0xb0, 0x37, 0x59, 0xbc, 0xe8, 0x6d, 0xdb, 0xc4, 0x1a,
+	0xac, 0xbb, 0x25, 0x99, 0x4a, 0xf3, 0x16, 0xbe, 0x80, 0xaf, 0x23, 0x1e, 0x7b, 0xf4, 0x28, 0xed,
+	0x8b, 0xc8, 0x66, 0x5b, 0x76, 0x11, 0xec, 0x6d, 0xbe, 0xc9, 0xff, 0x4f, 0x92, 0x7f, 0xa0, 0x85,
+	0x7a, 0x6a, 0xd0, 0x60, 0xaa, 0x65, 0x10, 0x23, 0x4a, 0x83, 0x31, 0xaa, 0x34, 0xf1, 0x27, 0x3a,
+	0xc5, 0x94, 0xb6, 0x06, 0xe3, 0x58, 0x1b, 0xeb, 0x17, 0xa2, 0x52, 0xd9, 0xf9, 0x20, 0xd0, 0xbc,
+	0x2e, 0x3c, 0x74, 0x1f, 0xea, 0x2a, 0x11, 0x72, 0xc6, 0x48, 0x9b, 0x74, 0x77, 0xa2, 0x1c, 0x28,
+	0x07, 0x50, 0x42, 0x26, 0xa8, 0x9e, 0x94, 0xd4, 0xac, 0xea, 0x8e, 0x4a, 0x1d, 0x7a, 0x0a, 0xbb,
+	0x05, 0xdd, 0xdb, 0x89, 0x64, 0x9e, 0xd3, 0xfc, 0xe9, 0xd2, 0x03, 0x68, 0xe8, 0x18, 0x55, 0x32,
+	0x62, 0xb5, 0x36, 0xe9, 0xd6, 0xa2, 0x15, 0x51, 0x06, 0x5b, 0x43, 0x2d, 0x63, 0x4c, 0x35, 0xab,
+	0x3b, 0xe3, 0x1a, 0x3b, 0xc7, 0xe0, 0x85, 0xc2, 0x64, 0x02, 0xf7, 0x12, 0x69, 0x18, 0x69, 0x7b,
+	0x99, 0x60, 0x85, 0x9d, 0x4f, 0x02, 0x87, 0xa5, 0x0f, 0x84, 0xc2, 0xf4, 0xed, 0x4d, 0x6e, 0xa6,
+	0x77, 0xe0, 0x29, 0x91, 0x3b, 0x9a, 0xbd, 0x2b, 0x7f, 0x53, 0x10, 0xfe, 0x3f, 0x33, 0xfc, 0x50,
+	0x98, 0xdb, 0x04, 0xb5, 0x8d, 0xb2, 0x51, 0x47, 0x0f, 0xb0, 0xbd, 0x6e, 0xd0, 0x3d, 0xf0, 0x5e,
+	0xa4, 0x5d, 0x05, 0x95, 0x95, 0xf4, 0x1c, 0xea, 0x6f, 0xf1, 0x78, 0x2a, 0x5d, 0x42, 0xcd, 0xde,
+	0xc9, 0xe6, 0x1b, 0x43, 0x61, 0xa2, 0x5c, 0x7f, 0x59, 0xbd, 0x20, 0xfd, 0xf0, 0x6b, 0xc1, 0xc9,
+	0x7c, 0xc1, 0xc9, 0xcf, 0x82, 0x93, 0xf7, 0x25, 0xaf, 0xcc, 0x97, 0xbc, 0xf2, 0xbd, 0xe4, 0x95,
+	0xc7, 0x60, 0xa4, 0xf0, 0x79, 0x3a, 0xf0, 0x87, 0xe9, 0x6b, 0x90, 0x4f, 0x0c, 0x4a, 0x1b, 0x9f,
+	0x95, 0x01, 0xed, 0x44, 0x9a, 0x41, 0xc3, 0x6d, 0xfe, 0xec, 0x37, 0x00, 0x00, 0xff, 0xff, 0xd5,
+	0x0b, 0xae, 0x80, 0x19, 0x02, 0x00, 0x00,
 }
 
 func (m *Attestation) Marshal() (dAtA []byte, err error) {
@@ -178,6 +276,87 @@ func (m *Attestation) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *Ids) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Ids) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Ids) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Indexes) > 0 {
+		for iNdEx := len(m.Indexes) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Indexes[iNdEx])
+			copy(dAtA[i:], m.Indexes[iNdEx])
+			i = encodeVarintAttestation(dAtA, i, uint64(len(m.Indexes[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *AttestationIdsByCreator) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *AttestationIdsByCreator) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *AttestationIdsByCreator) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Ids) > 0 {
+		for k := range m.Ids {
+			v := m.Ids[k]
+			baseI := i
+			if v != nil {
+				{
+					size, err := v.MarshalToSizedBuffer(dAtA[:i])
+					if err != nil {
+						return 0, err
+					}
+					i -= size
+					i = encodeVarintAttestation(dAtA, i, uint64(size))
+				}
+				i--
+				dAtA[i] = 0x12
+			}
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintAttestation(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintAttestation(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintAttestation(dAtA []byte, offset int, v uint64) int {
 	offset -= sovAttestation(v)
 	base := offset
@@ -213,6 +392,43 @@ func (m *Attestation) Size() (n int) {
 	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovAttestation(uint64(l))
+	}
+	return n
+}
+
+func (m *Ids) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Indexes) > 0 {
+		for _, s := range m.Indexes {
+			l = len(s)
+			n += 1 + l + sovAttestation(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *AttestationIdsByCreator) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Ids) > 0 {
+		for k, v := range m.Ids {
+			_ = k
+			_ = v
+			l = 0
+			if v != nil {
+				l = v.Size()
+				l += 1 + sovAttestation(uint64(l))
+			}
+			mapEntrySize := 1 + len(k) + sovAttestation(uint64(len(k))) + l
+			n += mapEntrySize + 1 + sovAttestation(uint64(mapEntrySize))
+		}
 	}
 	return n
 }
@@ -398,6 +614,267 @@ func (m *Attestation) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAttestation(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthAttestation
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Ids) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAttestation
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Ids: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Ids: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Indexes", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAttestation
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAttestation
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAttestation
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Indexes = append(m.Indexes, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAttestation(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthAttestation
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *AttestationIdsByCreator) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAttestation
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: AttestationIdsByCreator: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: AttestationIdsByCreator: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Ids", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAttestation
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAttestation
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAttestation
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Ids == nil {
+				m.Ids = make(map[string]*Ids)
+			}
+			var mapkey string
+			var mapvalue *Ids
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowAttestation
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowAttestation
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthAttestation
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey < 0 {
+						return ErrInvalidLengthAttestation
+					}
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var mapmsglen int
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowAttestation
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapmsglen |= int(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					if mapmsglen < 0 {
+						return ErrInvalidLengthAttestation
+					}
+					postmsgIndex := iNdEx + mapmsglen
+					if postmsgIndex < 0 {
+						return ErrInvalidLengthAttestation
+					}
+					if postmsgIndex > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = &Ids{}
+					if err := mapvalue.Unmarshal(dAtA[iNdEx:postmsgIndex]); err != nil {
+						return err
+					}
+					iNdEx = postmsgIndex
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipAttestation(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthAttestation
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.Ids[mapkey] = mapvalue
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

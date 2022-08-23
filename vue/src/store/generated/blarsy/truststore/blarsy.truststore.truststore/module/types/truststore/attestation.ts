@@ -12,6 +12,19 @@ export interface Attestation {
   creator: string;
 }
 
+export interface Ids {
+  indexes: string[];
+}
+
+export interface AttestationIdsByCreator {
+  ids: { [key: string]: Ids };
+}
+
+export interface AttestationIdsByCreator_IdsEntry {
+  key: string;
+  value: Ids | undefined;
+}
+
 const baseAttestation: object = {
   index: "",
   identifier: "",
@@ -137,6 +150,240 @@ export const Attestation = {
       message.creator = object.creator;
     } else {
       message.creator = "";
+    }
+    return message;
+  },
+};
+
+const baseIds: object = { indexes: "" };
+
+export const Ids = {
+  encode(message: Ids, writer: Writer = Writer.create()): Writer {
+    for (const v of message.indexes) {
+      writer.uint32(10).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): Ids {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseIds } as Ids;
+    message.indexes = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.indexes.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Ids {
+    const message = { ...baseIds } as Ids;
+    message.indexes = [];
+    if (object.indexes !== undefined && object.indexes !== null) {
+      for (const e of object.indexes) {
+        message.indexes.push(String(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: Ids): unknown {
+    const obj: any = {};
+    if (message.indexes) {
+      obj.indexes = message.indexes.map((e) => e);
+    } else {
+      obj.indexes = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Ids>): Ids {
+    const message = { ...baseIds } as Ids;
+    message.indexes = [];
+    if (object.indexes !== undefined && object.indexes !== null) {
+      for (const e of object.indexes) {
+        message.indexes.push(e);
+      }
+    }
+    return message;
+  },
+};
+
+const baseAttestationIdsByCreator: object = {};
+
+export const AttestationIdsByCreator = {
+  encode(
+    message: AttestationIdsByCreator,
+    writer: Writer = Writer.create()
+  ): Writer {
+    Object.entries(message.ids).forEach(([key, value]) => {
+      AttestationIdsByCreator_IdsEntry.encode(
+        { key: key as any, value },
+        writer.uint32(10).fork()
+      ).ldelim();
+    });
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): AttestationIdsByCreator {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAttestationIdsByCreator,
+    } as AttestationIdsByCreator;
+    message.ids = {};
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          const entry1 = AttestationIdsByCreator_IdsEntry.decode(
+            reader,
+            reader.uint32()
+          );
+          if (entry1.value !== undefined) {
+            message.ids[entry1.key] = entry1.value;
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AttestationIdsByCreator {
+    const message = {
+      ...baseAttestationIdsByCreator,
+    } as AttestationIdsByCreator;
+    message.ids = {};
+    if (object.ids !== undefined && object.ids !== null) {
+      Object.entries(object.ids).forEach(([key, value]) => {
+        message.ids[key] = Ids.fromJSON(value);
+      });
+    }
+    return message;
+  },
+
+  toJSON(message: AttestationIdsByCreator): unknown {
+    const obj: any = {};
+    obj.ids = {};
+    if (message.ids) {
+      Object.entries(message.ids).forEach(([k, v]) => {
+        obj.ids[k] = Ids.toJSON(v);
+      });
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<AttestationIdsByCreator>
+  ): AttestationIdsByCreator {
+    const message = {
+      ...baseAttestationIdsByCreator,
+    } as AttestationIdsByCreator;
+    message.ids = {};
+    if (object.ids !== undefined && object.ids !== null) {
+      Object.entries(object.ids).forEach(([key, value]) => {
+        if (value !== undefined) {
+          message.ids[key] = Ids.fromPartial(value);
+        }
+      });
+    }
+    return message;
+  },
+};
+
+const baseAttestationIdsByCreator_IdsEntry: object = { key: "" };
+
+export const AttestationIdsByCreator_IdsEntry = {
+  encode(
+    message: AttestationIdsByCreator_IdsEntry,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== undefined) {
+      Ids.encode(message.value, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): AttestationIdsByCreator_IdsEntry {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAttestationIdsByCreator_IdsEntry,
+    } as AttestationIdsByCreator_IdsEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = Ids.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AttestationIdsByCreator_IdsEntry {
+    const message = {
+      ...baseAttestationIdsByCreator_IdsEntry,
+    } as AttestationIdsByCreator_IdsEntry;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = String(object.key);
+    } else {
+      message.key = "";
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = Ids.fromJSON(object.value);
+    } else {
+      message.value = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: AttestationIdsByCreator_IdsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined &&
+      (obj.value = message.value ? Ids.toJSON(message.value) : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<AttestationIdsByCreator_IdsEntry>
+  ): AttestationIdsByCreator_IdsEntry {
+    const message = {
+      ...baseAttestationIdsByCreator_IdsEntry,
+    } as AttestationIdsByCreator_IdsEntry;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    } else {
+      message.key = "";
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = Ids.fromPartial(object.value);
+    } else {
+      message.value = undefined;
     }
     return message;
   },

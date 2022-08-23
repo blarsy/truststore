@@ -6,7 +6,8 @@ var _ binary.ByteOrder
 
 const (
 	// AttestationKeyPrefix is the prefix to retrieve all Attestation
-	AttestationKeyPrefix = "Attestation/value/"
+	AttestationKeyPrefix          = "Attestation/value/"
+	AttestationByCreatorKeyPrefix = "Attestation/byCreator/value"
 )
 
 // AttestationKey returns the store key to retrieve a Attestation from the index fields

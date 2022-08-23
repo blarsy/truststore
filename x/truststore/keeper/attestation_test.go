@@ -61,3 +61,14 @@ func TestAttestationGetAll(t *testing.T) {
 		nullify.Fill(keeper.GetAllAttestation(ctx)),
 	)
 }
+
+func TestAttestationGetByCreator(t *testing.T) {
+	keeper, ctx := keepertest.TruststoreKeeper(t)
+	keeper.SetAttestation(ctx, types.Attestation{Index: "1", Creator: "abc"})
+	keeper.SetAttestation(ctx, types.Attestation{Index: "2", Creator: "def"})
+	keeper.SetAttestation(ctx, types.Attestation{Index: "3", Creator: "abc"})
+
+	result := keeper.GetAttestationsByCreator(ctx, "abc")
+	require.Equal(t, "1", result[0].Index)
+	require.Equal(t, "3", result[1].Index)
+}
