@@ -84,6 +84,10 @@ export interface TruststoreQueryAttestationByCreatorIdentifierResponse {
   attestation?: TruststoreAttestation;
 }
 
+export interface TruststoreQueryAttestationByCreatorResponse {
+  attestations?: TruststoreAttestation[];
+}
+
 export interface TruststoreQueryGetAttestationResponse {
   attestation?: TruststoreAttestation;
 }
@@ -400,6 +404,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryAttestation = (index: string, params: RequestParams = {}) =>
     this.request<TruststoreQueryGetAttestationResponse, RpcStatus>({
       path: `/blarsy/truststore/truststore/attestation/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAttestationByCreator
+   * @summary Queries a list of AttestationByCreator items.
+   * @request GET:/blarsy/truststore/truststore/attestation_by_creator/{creator}
+   */
+  queryAttestationByCreator = (creator: string, params: RequestParams = {}) =>
+    this.request<TruststoreQueryAttestationByCreatorResponse, RpcStatus>({
+      path: `/blarsy/truststore/truststore/attestation_by_creator/${creator}`,
       method: "GET",
       format: "json",
       ...params,

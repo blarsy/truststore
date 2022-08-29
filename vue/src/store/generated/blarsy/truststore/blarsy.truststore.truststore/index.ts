@@ -53,6 +53,7 @@ const getDefaultState = () => {
 				IdentifierTypeAll: {},
 				Global: {},
 				AttestationByCreatorIdentifier: {},
+				AttestationByCreator: {},
 				
 				_Structure: {
 						Attestation: getStructure(Attestation.fromPartial({})),
@@ -130,6 +131,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.AttestationByCreatorIdentifier[JSON.stringify(params)] ?? {}
+		},
+				getAttestationByCreator: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.AttestationByCreator[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -322,6 +329,28 @@ export default {
 				return getters['getAttestationByCreatorIdentifier']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryAttestationByCreatorIdentifier API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryAttestationByCreator({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryAttestationByCreator( key.creator)).data
+				
+					
+				commit('QUERY', { query: 'AttestationByCreator', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAttestationByCreator', payload: { options: { all }, params: {...key},query }})
+				return getters['getAttestationByCreator']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryAttestationByCreator API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

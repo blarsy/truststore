@@ -34,3 +34,6 @@ genesis:
         - description: "Mobile phone number"
           index: "4"
           name: "mobile"
+init:
+  app:
+    api.enabled-unsafe-cors: "true"

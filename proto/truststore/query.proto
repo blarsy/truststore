@@ -47,6 +47,11 @@ service Query {
 		option (google.api.http).get = "/blarsy/truststore/truststore/attestation_by_creator_identifier/{creator}/{identifierType}/{identifier}";
 	}
 
+// Queries a list of AttestationByCreator items.
+	rpc AttestationByCreator(QueryAttestationByCreatorRequest) returns (QueryAttestationByCreatorResponse) {
+		option (google.api.http).get = "/blarsy/truststore/truststore/attestation_by_creator/{creator}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -108,6 +113,14 @@ message QueryAttestationByCreatorIdentifierRequest {
 
 message QueryAttestationByCreatorIdentifierResponse {
   Attestation attestation = 1;
+}
+
+message QueryAttestationByCreatorRequest {
+  string creator = 1;
+}
+
+message QueryAttestationByCreatorResponse {
+	repeated Attestation attestations = 1;
 }
 
 // this line is used by starport scaffolding # 3

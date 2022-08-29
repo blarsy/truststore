@@ -70,6 +70,14 @@ export interface QueryAttestationByCreatorIdentifierResponse {
   attestation: Attestation | undefined;
 }
 
+export interface QueryAttestationByCreatorRequest {
+  creator: string;
+}
+
+export interface QueryAttestationByCreatorResponse {
+  attestations: Attestation[];
+}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -1090,6 +1098,155 @@ export const QueryAttestationByCreatorIdentifierResponse = {
   },
 };
 
+const baseQueryAttestationByCreatorRequest: object = { creator: "" };
+
+export const QueryAttestationByCreatorRequest = {
+  encode(
+    message: QueryAttestationByCreatorRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAttestationByCreatorRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAttestationByCreatorRequest,
+    } as QueryAttestationByCreatorRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAttestationByCreatorRequest {
+    const message = {
+      ...baseQueryAttestationByCreatorRequest,
+    } as QueryAttestationByCreatorRequest;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAttestationByCreatorRequest): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAttestationByCreatorRequest>
+  ): QueryAttestationByCreatorRequest {
+    const message = {
+      ...baseQueryAttestationByCreatorRequest,
+    } as QueryAttestationByCreatorRequest;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryAttestationByCreatorResponse: object = {};
+
+export const QueryAttestationByCreatorResponse = {
+  encode(
+    message: QueryAttestationByCreatorResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.attestations) {
+      Attestation.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAttestationByCreatorResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAttestationByCreatorResponse,
+    } as QueryAttestationByCreatorResponse;
+    message.attestations = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.attestations.push(
+            Attestation.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAttestationByCreatorResponse {
+    const message = {
+      ...baseQueryAttestationByCreatorResponse,
+    } as QueryAttestationByCreatorResponse;
+    message.attestations = [];
+    if (object.attestations !== undefined && object.attestations !== null) {
+      for (const e of object.attestations) {
+        message.attestations.push(Attestation.fromJSON(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAttestationByCreatorResponse): unknown {
+    const obj: any = {};
+    if (message.attestations) {
+      obj.attestations = message.attestations.map((e) =>
+        e ? Attestation.toJSON(e) : undefined
+      );
+    } else {
+      obj.attestations = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAttestationByCreatorResponse>
+  ): QueryAttestationByCreatorResponse {
+    const message = {
+      ...baseQueryAttestationByCreatorResponse,
+    } as QueryAttestationByCreatorResponse;
+    message.attestations = [];
+    if (object.attestations !== undefined && object.attestations !== null) {
+      for (const e of object.attestations) {
+        message.attestations.push(Attestation.fromPartial(e));
+      }
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1116,6 +1273,10 @@ export interface Query {
   AttestationByCreatorIdentifier(
     request: QueryAttestationByCreatorIdentifierRequest
   ): Promise<QueryAttestationByCreatorIdentifierResponse>;
+  /** Queries a list of AttestationByCreator items. */
+  AttestationByCreator(
+    request: QueryAttestationByCreatorRequest
+  ): Promise<QueryAttestationByCreatorResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1214,6 +1375,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAttestationByCreatorIdentifierResponse.decode(new Reader(data))
+    );
+  }
+
+  AttestationByCreator(
+    request: QueryAttestationByCreatorRequest
+  ): Promise<QueryAttestationByCreatorResponse> {
+    const data = QueryAttestationByCreatorRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "blarsy.truststore.truststore.Query",
+      "AttestationByCreator",
+      data
+    );
+    return promise.then((data) =>
+      QueryAttestationByCreatorResponse.decode(new Reader(data))
     );
   }
 }

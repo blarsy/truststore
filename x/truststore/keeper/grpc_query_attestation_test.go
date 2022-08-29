@@ -2,6 +2,7 @@ package keeper_test
 
 import (
 	"strconv"
+	"strings"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -122,5 +123,121 @@ func TestAttestationQueryPaginated(t *testing.T) {
 	t.Run("InvalidRequest", func(t *testing.T) {
 		_, err := keeper.AttestationAll(wctx, nil)
 		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
+	})
+}
+
+func TestAttestationQueryByCreatorIdentifier(t *testing.T) {
+	keeper, ctx := keepertest.TruststoreKeeper(t)
+	wctx := sdk.WrapSDKContext(ctx)
+
+	attestations := []types.Attestation{
+		{
+			Index:          "1",
+			Creator:        "c1",
+			IdentifierType: "1",
+			Identifier:     "Id1",
+		}, {
+
+			Index:          "2",
+			Creator:        "c2",
+			IdentifierType: "2",
+			Identifier:     "Id2",
+		},
+	}
+	for _, attestation := range attestations {
+		keeper.SetAttestation(ctx, attestation)
+	}
+
+	t.Run("Gets the first", func(t *testing.T) {
+		res, err := keeper.AttestationByCreatorIdentifier(wctx, &types.QueryAttestationByCreatorIdentifierRequest{
+			Creator:        "c1",
+			IdentifierType: "1",
+			Identifier:     "Id1",
+		})
+		require.Nil(t, err)
+		require.Equal(t, "1", res.Attestation.Index)
+	})
+	t.Run("Gets the second", func(t *testing.T) {
+		res, err := keeper.AttestationByCreatorIdentifier(wctx, &types.QueryAttestationByCreatorIdentifierRequest{
+			Creator:        "c2",
+			IdentifierType: "2",
+			Identifier:     "Id2",
+		})
+		require.Nil(t, err)
+		require.Equal(t, "2", res.Attestation.Index)
+	})
+	t.Run("Invalid requast", func(t *testing.T) {
+		res, err := keeper.AttestationByCreatorIdentifier(wctx, nil)
+		require.Nil(t, res)
+		require.True(t, strings.Contains(err.Error(), "invalid request"))
+	})
+	t.Run("Not found", func(t *testing.T) {
+		res, err := keeper.AttestationByCreatorIdentifier(wctx, &types.QueryAttestationByCreatorIdentifierRequest{
+			Creator:        "doesnotexist",
+			IdentifierType: "2",
+			Identifier:     "Id2",
+		})
+		require.Nil(t, res)
+		require.True(t, strings.Contains(err.Error(), "no attestation found matching the provided arguments"))
+	})
+}
+
+func TestAttestationQueryByCreator(t *testing.T) {
+	keeper, ctx := keepertest.TruststoreKeeper(t)
+	wctx := sdk.WrapSDKContext(ctx)
+
+	attestations := []types.Attestation{
+		{
+			Index:          "1",
+			Creator:        "c1",
+			IdentifierType: "1",
+			Identifier:     "Id1",
+		}, {
+
+			Index:          "2",
+			Creator:        "c2",
+			IdentifierType: "2",
+			Identifier:     "Id2",
+		}, {
+
+			Index:          "3",
+			Creator:        "c1",
+			IdentifierType: "3",
+			Identifier:     "Id3",
+		},
+	}
+	for _, attestation := range attestations {
+		keeper.SetAttestation(ctx, attestation)
+	}
+
+	t.Run("Gets several results", func(t *testing.T) {
+		res, err := keeper.AttestationByCreator(wctx, &types.QueryAttestationByCreatorRequest{
+			Creator: "c1",
+		})
+		require.Nil(t, err)
+		require.Equal(t, 2, len(res.Attestations))
+		require.Equal(t, "1", res.Attestations[0].Index)
+		require.Equal(t, "3", res.Attestations[1].Index)
+
+	})
+	t.Run("Gets one result as list of 1 item", func(t *testing.T) {
+		res, err := keeper.AttestationByCreator(wctx, &types.QueryAttestationByCreatorRequest{
+			Creator: "c2",
+		})
+		require.Nil(t, err)
+		require.Equal(t, 1, len(res.Attestations))
+		require.Equal(t, "2", res.Attestations[0].Index)
+	})
+	t.Run("Invalid requast", func(t *testing.T) {
+		res, err := keeper.AttestationByCreator(wctx, nil)
+		require.Nil(t, res)
+		require.True(t, strings.Contains(err.Error(), "invalid request"))
+	})
+	t.Run("Not found", func(t *testing.T) {
+		res, err := keeper.AttestationByCreator(wctx, &types.QueryAttestationByCreatorRequest{
+			Creator: "doesnotexist",
+		})
+		require.Nil(t, err)
+		require.Equal(t, 0, len(res.Attestations))
 	})
 }
