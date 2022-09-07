@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { Button, Box, Stack, Typography, Alert, CircularProgress } from '@mui/material'
+import { Button, Box, Typography, Alert, CircularProgress } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Window as KeplrWindow } from "@keplr-wallet/types"
 import { connect } from '../lib/connect'

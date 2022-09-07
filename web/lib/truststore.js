@@ -5018,6 +5018,529 @@ export const blarsy = $root.blarsy = (() => {
                 return QueryAttestationByCreatorResponse;
             })();
 
+            truststore.Msg = (function() {
+
+                /**
+                 * Constructs a new Msg service.
+                 * @memberof blarsy.truststore.truststore
+                 * @classdesc Represents a Msg
+                 * @extends $protobuf.rpc.Service
+                 * @constructor
+                 * @param {$protobuf.RPCImpl} rpcImpl RPC implementation
+                 * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
+                 * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
+                 */
+                function Msg(rpcImpl, requestDelimited, responseDelimited) {
+                    $protobuf.rpc.Service.call(this, rpcImpl, requestDelimited, responseDelimited);
+                }
+
+                (Msg.prototype = Object.create($protobuf.rpc.Service.prototype)).constructor = Msg;
+
+                /**
+                 * Creates new Msg service using the specified rpc implementation.
+                 * @function create
+                 * @memberof blarsy.truststore.truststore.Msg
+                 * @static
+                 * @param {$protobuf.RPCImpl} rpcImpl RPC implementation
+                 * @param {boolean} [requestDelimited=false] Whether requests are length-delimited
+                 * @param {boolean} [responseDelimited=false] Whether responses are length-delimited
+                 * @returns {Msg} RPC service. Useful where requests and/or responses are streamed.
+                 */
+                Msg.create = function create(rpcImpl, requestDelimited, responseDelimited) {
+                    return new this(rpcImpl, requestDelimited, responseDelimited);
+                };
+
+                /**
+                 * Callback as used by {@link blarsy.truststore.truststore.Msg#createAttestation}.
+                 * @memberof blarsy.truststore.truststore.Msg
+                 * @typedef CreateAttestationCallback
+                 * @type {function}
+                 * @param {Error|null} error Error, if any
+                 * @param {blarsy.truststore.truststore.MsgCreateAttestationResponse} [response] MsgCreateAttestationResponse
+                 */
+
+                /**
+                 * Calls CreateAttestation.
+                 * @function createAttestation
+                 * @memberof blarsy.truststore.truststore.Msg
+                 * @instance
+                 * @param {blarsy.truststore.truststore.IMsgCreateAttestation} request MsgCreateAttestation message or plain object
+                 * @param {blarsy.truststore.truststore.Msg.CreateAttestationCallback} callback Node-style callback called with the error, if any, and MsgCreateAttestationResponse
+                 * @returns {undefined}
+                 * @variation 1
+                 */
+                Object.defineProperty(Msg.prototype.createAttestation = function createAttestation(request, callback) {
+                    return this.rpcCall(createAttestation, $root.blarsy.truststore.truststore.MsgCreateAttestation, $root.blarsy.truststore.truststore.MsgCreateAttestationResponse, request, callback);
+                }, "name", { value: "CreateAttestation" });
+
+                /**
+                 * Calls CreateAttestation.
+                 * @function createAttestation
+                 * @memberof blarsy.truststore.truststore.Msg
+                 * @instance
+                 * @param {blarsy.truststore.truststore.IMsgCreateAttestation} request MsgCreateAttestation message or plain object
+                 * @returns {Promise<blarsy.truststore.truststore.MsgCreateAttestationResponse>} Promise
+                 * @variation 2
+                 */
+
+                return Msg;
+            })();
+
+            truststore.MsgCreateAttestation = (function() {
+
+                /**
+                 * Properties of a MsgCreateAttestation.
+                 * @memberof blarsy.truststore.truststore
+                 * @interface IMsgCreateAttestation
+                 * @property {string|null} [creator] MsgCreateAttestation creator
+                 * @property {string|null} [identifier] MsgCreateAttestation identifier
+                 * @property {string|null} [identifierType] MsgCreateAttestation identifierType
+                 * @property {number|Long|null} [rating] MsgCreateAttestation rating
+                 */
+
+                /**
+                 * Constructs a new MsgCreateAttestation.
+                 * @memberof blarsy.truststore.truststore
+                 * @classdesc Represents a MsgCreateAttestation.
+                 * @implements IMsgCreateAttestation
+                 * @constructor
+                 * @param {blarsy.truststore.truststore.IMsgCreateAttestation=} [properties] Properties to set
+                 */
+                function MsgCreateAttestation(properties) {
+                    if (properties)
+                        for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * MsgCreateAttestation creator.
+                 * @member {string} creator
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestation
+                 * @instance
+                 */
+                MsgCreateAttestation.prototype.creator = "";
+
+                /**
+                 * MsgCreateAttestation identifier.
+                 * @member {string} identifier
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestation
+                 * @instance
+                 */
+                MsgCreateAttestation.prototype.identifier = "";
+
+                /**
+                 * MsgCreateAttestation identifierType.
+                 * @member {string} identifierType
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestation
+                 * @instance
+                 */
+                MsgCreateAttestation.prototype.identifierType = "";
+
+                /**
+                 * MsgCreateAttestation rating.
+                 * @member {number|Long} rating
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestation
+                 * @instance
+                 */
+                MsgCreateAttestation.prototype.rating = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                /**
+                 * Creates a new MsgCreateAttestation instance using the specified properties.
+                 * @function create
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestation
+                 * @static
+                 * @param {blarsy.truststore.truststore.IMsgCreateAttestation=} [properties] Properties to set
+                 * @returns {blarsy.truststore.truststore.MsgCreateAttestation} MsgCreateAttestation instance
+                 */
+                MsgCreateAttestation.create = function create(properties) {
+                    return new MsgCreateAttestation(properties);
+                };
+
+                /**
+                 * Encodes the specified MsgCreateAttestation message. Does not implicitly {@link blarsy.truststore.truststore.MsgCreateAttestation.verify|verify} messages.
+                 * @function encode
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestation
+                 * @static
+                 * @param {blarsy.truststore.truststore.IMsgCreateAttestation} message MsgCreateAttestation message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                MsgCreateAttestation.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.creator != null && Object.hasOwnProperty.call(message, "creator"))
+                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.creator);
+                    if (message.identifier != null && Object.hasOwnProperty.call(message, "identifier"))
+                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.identifier);
+                    if (message.identifierType != null && Object.hasOwnProperty.call(message, "identifierType"))
+                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.identifierType);
+                    if (message.rating != null && Object.hasOwnProperty.call(message, "rating"))
+                        writer.uint32(/* id 4, wireType 0 =*/32).uint64(message.rating);
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified MsgCreateAttestation message, length delimited. Does not implicitly {@link blarsy.truststore.truststore.MsgCreateAttestation.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestation
+                 * @static
+                 * @param {blarsy.truststore.truststore.IMsgCreateAttestation} message MsgCreateAttestation message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                MsgCreateAttestation.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a MsgCreateAttestation message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestation
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {blarsy.truststore.truststore.MsgCreateAttestation} MsgCreateAttestation
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                MsgCreateAttestation.decode = function decode(reader, length) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    let end = length === undefined ? reader.len : reader.pos + length, message = new $root.blarsy.truststore.truststore.MsgCreateAttestation();
+                    while (reader.pos < end) {
+                        let tag = reader.uint32();
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.creator = reader.string();
+                            break;
+                        case 2:
+                            message.identifier = reader.string();
+                            break;
+                        case 3:
+                            message.identifierType = reader.string();
+                            break;
+                        case 4:
+                            message.rating = reader.uint64();
+                            break;
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a MsgCreateAttestation message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestation
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {blarsy.truststore.truststore.MsgCreateAttestation} MsgCreateAttestation
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                MsgCreateAttestation.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a MsgCreateAttestation message.
+                 * @function verify
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestation
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                MsgCreateAttestation.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    if (message.creator != null && message.hasOwnProperty("creator"))
+                        if (!$util.isString(message.creator))
+                            return "creator: string expected";
+                    if (message.identifier != null && message.hasOwnProperty("identifier"))
+                        if (!$util.isString(message.identifier))
+                            return "identifier: string expected";
+                    if (message.identifierType != null && message.hasOwnProperty("identifierType"))
+                        if (!$util.isString(message.identifierType))
+                            return "identifierType: string expected";
+                    if (message.rating != null && message.hasOwnProperty("rating"))
+                        if (!$util.isInteger(message.rating) && !(message.rating && $util.isInteger(message.rating.low) && $util.isInteger(message.rating.high)))
+                            return "rating: integer|Long expected";
+                    return null;
+                };
+
+                /**
+                 * Creates a MsgCreateAttestation message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestation
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {blarsy.truststore.truststore.MsgCreateAttestation} MsgCreateAttestation
+                 */
+                MsgCreateAttestation.fromObject = function fromObject(object) {
+                    if (object instanceof $root.blarsy.truststore.truststore.MsgCreateAttestation)
+                        return object;
+                    let message = new $root.blarsy.truststore.truststore.MsgCreateAttestation();
+                    if (object.creator != null)
+                        message.creator = String(object.creator);
+                    if (object.identifier != null)
+                        message.identifier = String(object.identifier);
+                    if (object.identifierType != null)
+                        message.identifierType = String(object.identifierType);
+                    if (object.rating != null)
+                        if ($util.Long)
+                            (message.rating = $util.Long.fromValue(object.rating)).unsigned = true;
+                        else if (typeof object.rating === "string")
+                            message.rating = parseInt(object.rating, 10);
+                        else if (typeof object.rating === "number")
+                            message.rating = object.rating;
+                        else if (typeof object.rating === "object")
+                            message.rating = new $util.LongBits(object.rating.low >>> 0, object.rating.high >>> 0).toNumber(true);
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a MsgCreateAttestation message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestation
+                 * @static
+                 * @param {blarsy.truststore.truststore.MsgCreateAttestation} message MsgCreateAttestation
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                MsgCreateAttestation.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    let object = {};
+                    if (options.defaults) {
+                        object.creator = "";
+                        object.identifier = "";
+                        object.identifierType = "";
+                        if ($util.Long) {
+                            let long = new $util.Long(0, 0, true);
+                            object.rating = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                        } else
+                            object.rating = options.longs === String ? "0" : 0;
+                    }
+                    if (message.creator != null && message.hasOwnProperty("creator"))
+                        object.creator = message.creator;
+                    if (message.identifier != null && message.hasOwnProperty("identifier"))
+                        object.identifier = message.identifier;
+                    if (message.identifierType != null && message.hasOwnProperty("identifierType"))
+                        object.identifierType = message.identifierType;
+                    if (message.rating != null && message.hasOwnProperty("rating"))
+                        if (typeof message.rating === "number")
+                            object.rating = options.longs === String ? String(message.rating) : message.rating;
+                        else
+                            object.rating = options.longs === String ? $util.Long.prototype.toString.call(message.rating) : options.longs === Number ? new $util.LongBits(message.rating.low >>> 0, message.rating.high >>> 0).toNumber(true) : message.rating;
+                    return object;
+                };
+
+                /**
+                 * Converts this MsgCreateAttestation to JSON.
+                 * @function toJSON
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestation
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                MsgCreateAttestation.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                return MsgCreateAttestation;
+            })();
+
+            truststore.MsgCreateAttestationResponse = (function() {
+
+                /**
+                 * Properties of a MsgCreateAttestationResponse.
+                 * @memberof blarsy.truststore.truststore
+                 * @interface IMsgCreateAttestationResponse
+                 * @property {string|null} [idValue] MsgCreateAttestationResponse idValue
+                 */
+
+                /**
+                 * Constructs a new MsgCreateAttestationResponse.
+                 * @memberof blarsy.truststore.truststore
+                 * @classdesc Represents a MsgCreateAttestationResponse.
+                 * @implements IMsgCreateAttestationResponse
+                 * @constructor
+                 * @param {blarsy.truststore.truststore.IMsgCreateAttestationResponse=} [properties] Properties to set
+                 */
+                function MsgCreateAttestationResponse(properties) {
+                    if (properties)
+                        for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * MsgCreateAttestationResponse idValue.
+                 * @member {string} idValue
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestationResponse
+                 * @instance
+                 */
+                MsgCreateAttestationResponse.prototype.idValue = "";
+
+                /**
+                 * Creates a new MsgCreateAttestationResponse instance using the specified properties.
+                 * @function create
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestationResponse
+                 * @static
+                 * @param {blarsy.truststore.truststore.IMsgCreateAttestationResponse=} [properties] Properties to set
+                 * @returns {blarsy.truststore.truststore.MsgCreateAttestationResponse} MsgCreateAttestationResponse instance
+                 */
+                MsgCreateAttestationResponse.create = function create(properties) {
+                    return new MsgCreateAttestationResponse(properties);
+                };
+
+                /**
+                 * Encodes the specified MsgCreateAttestationResponse message. Does not implicitly {@link blarsy.truststore.truststore.MsgCreateAttestationResponse.verify|verify} messages.
+                 * @function encode
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestationResponse
+                 * @static
+                 * @param {blarsy.truststore.truststore.IMsgCreateAttestationResponse} message MsgCreateAttestationResponse message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                MsgCreateAttestationResponse.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.idValue != null && Object.hasOwnProperty.call(message, "idValue"))
+                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.idValue);
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified MsgCreateAttestationResponse message, length delimited. Does not implicitly {@link blarsy.truststore.truststore.MsgCreateAttestationResponse.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestationResponse
+                 * @static
+                 * @param {blarsy.truststore.truststore.IMsgCreateAttestationResponse} message MsgCreateAttestationResponse message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                MsgCreateAttestationResponse.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a MsgCreateAttestationResponse message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestationResponse
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {blarsy.truststore.truststore.MsgCreateAttestationResponse} MsgCreateAttestationResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                MsgCreateAttestationResponse.decode = function decode(reader, length) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    let end = length === undefined ? reader.len : reader.pos + length, message = new $root.blarsy.truststore.truststore.MsgCreateAttestationResponse();
+                    while (reader.pos < end) {
+                        let tag = reader.uint32();
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.idValue = reader.string();
+                            break;
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a MsgCreateAttestationResponse message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestationResponse
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {blarsy.truststore.truststore.MsgCreateAttestationResponse} MsgCreateAttestationResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                MsgCreateAttestationResponse.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a MsgCreateAttestationResponse message.
+                 * @function verify
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestationResponse
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                MsgCreateAttestationResponse.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    if (message.idValue != null && message.hasOwnProperty("idValue"))
+                        if (!$util.isString(message.idValue))
+                            return "idValue: string expected";
+                    return null;
+                };
+
+                /**
+                 * Creates a MsgCreateAttestationResponse message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestationResponse
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {blarsy.truststore.truststore.MsgCreateAttestationResponse} MsgCreateAttestationResponse
+                 */
+                MsgCreateAttestationResponse.fromObject = function fromObject(object) {
+                    if (object instanceof $root.blarsy.truststore.truststore.MsgCreateAttestationResponse)
+                        return object;
+                    let message = new $root.blarsy.truststore.truststore.MsgCreateAttestationResponse();
+                    if (object.idValue != null)
+                        message.idValue = String(object.idValue);
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a MsgCreateAttestationResponse message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestationResponse
+                 * @static
+                 * @param {blarsy.truststore.truststore.MsgCreateAttestationResponse} message MsgCreateAttestationResponse
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                MsgCreateAttestationResponse.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    let object = {};
+                    if (options.defaults)
+                        object.idValue = "";
+                    if (message.idValue != null && message.hasOwnProperty("idValue"))
+                        object.idValue = message.idValue;
+                    return object;
+                };
+
+                /**
+                 * Converts this MsgCreateAttestationResponse to JSON.
+                 * @function toJSON
+                 * @memberof blarsy.truststore.truststore.MsgCreateAttestationResponse
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                MsgCreateAttestationResponse.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                return MsgCreateAttestationResponse;
+            })();
+
             truststore.Params = (function() {
 
                 /**

@@ -1,11 +1,11 @@
 accounts:
   - name: alice
-    coins: ["20000token", "200000000stake"]
+    coins: ["20000000000utrust", "200000000wotgov"]
   - name: bob
-    coins: ["10000token", "100000000stake"]
+    coins: ["10000000000utrust", "100000000wotgov"]
 validator:
   name: alice
-  staked: "100000000stake"
+  staked: "100000000wotgov"
 client:
   openapi:
     path: "docs/static/openapi.yml"
@@ -13,9 +13,9 @@ client:
     path: "vue/src/store"
 faucet:
   name: bob
-  coins: ["5token", "100000stake"]
+  coins: ["1000000utrust"]
 genesis:
-  chain_id: "local-ci"
+  chain_id: "local"
   app_state:
     truststore:
       attestationList: []
@@ -34,6 +34,29 @@ genesis:
         - description: "Mobile phone number"
           index: "4"
           name: "mobile"
+    staking:
+      params:
+        bond_denom: "wotgov"
+    bank:
+      denom_metadata:
+        - description: "The Web o' Trust gas token"
+          name: "Trust"
+          symbol: "TRUST"
+          base: "utrust"
+          display: "trust"
+          denom_units:
+            - denom: "utrust"
+              exponent: 0
+            - denom: "trust"
+              exponent: 6
+        - description: "The Web o' Trust governance token"
+          name: "Wotgov"
+          symbol: "WOTGOV"
+          base: "wotgov"
+          display: "wotgov"
+          denom_units:
+            - denom: "wotgov"
+              exponent: 0
 init:
   app:
     api.enabled-unsafe-cors: "true"

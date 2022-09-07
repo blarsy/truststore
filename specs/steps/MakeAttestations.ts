@@ -13,7 +13,7 @@ let lastCreatedAttestationData: {
     creator: string
 }
 let initialCoinOnAccount: number
-const feeCoinDenom = 'token'
+const feeCoinDenom = 'trust'
 const fee = 10
 
 const executeProcess = (cmd: string, analyzer: (output: string)=>(void), verbose = false) => {

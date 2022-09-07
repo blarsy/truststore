@@ -1,4 +1,6 @@
+import { StargateClient } from "@cosmjs/stargate"
 import { Keplr } from "@keplr-wallet/types"
+
 
 const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID as string
 const CHAIN = process.env.NEXT_PUBLIC_CHAIN as string
@@ -110,4 +112,27 @@ export async function connect(keplr: Keplr): Promise<string> {
   } else {
       return "Please use the recent version of keplr extension"
   }
+}
+
+export interface BalancesInfo {
+  name: string,
+  balances: {
+    coin: string,
+    amount: string
+  }[]
+}
+
+export async function getBalances(keplr: Keplr): Promise<BalancesInfo> {
+    const keyInfo = await keplr.getKey(CHAIN_ID)
+
+    const client = await StargateClient.connect(RPC_ENDPOINT)
+    const balances = await client.getAllBalances(keyInfo.bech32Address)
+
+    return {
+      name: keyInfo.name,
+      balances: balances.map(coin => ({
+        coin: coin.denom,
+        amount: coin.amount
+      }))
+    }
 }

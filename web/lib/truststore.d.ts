@@ -2274,6 +2274,249 @@ export namespace blarsy {
                 public toJSON(): { [k: string]: any };
             }
 
+            /** Represents a Msg */
+            class Msg extends $protobuf.rpc.Service {
+
+                /**
+                 * Constructs a new Msg service.
+                 * @param rpcImpl RPC implementation
+                 * @param [requestDelimited=false] Whether requests are length-delimited
+                 * @param [responseDelimited=false] Whether responses are length-delimited
+                 */
+                constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
+
+                /**
+                 * Creates new Msg service using the specified rpc implementation.
+                 * @param rpcImpl RPC implementation
+                 * @param [requestDelimited=false] Whether requests are length-delimited
+                 * @param [responseDelimited=false] Whether responses are length-delimited
+                 * @returns RPC service. Useful where requests and/or responses are streamed.
+                 */
+                public static create(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): Msg;
+
+                /**
+                 * Calls CreateAttestation.
+                 * @param request MsgCreateAttestation message or plain object
+                 * @param callback Node-style callback called with the error, if any, and MsgCreateAttestationResponse
+                 */
+                public createAttestation(request: blarsy.truststore.truststore.IMsgCreateAttestation, callback: blarsy.truststore.truststore.Msg.CreateAttestationCallback): void;
+
+                /**
+                 * Calls CreateAttestation.
+                 * @param request MsgCreateAttestation message or plain object
+                 * @returns Promise
+                 */
+                public createAttestation(request: blarsy.truststore.truststore.IMsgCreateAttestation): Promise<blarsy.truststore.truststore.MsgCreateAttestationResponse>;
+            }
+
+            namespace Msg {
+
+                /**
+                 * Callback as used by {@link blarsy.truststore.truststore.Msg#createAttestation}.
+                 * @param error Error, if any
+                 * @param [response] MsgCreateAttestationResponse
+                 */
+                type CreateAttestationCallback = (error: (Error|null), response?: blarsy.truststore.truststore.MsgCreateAttestationResponse) => void;
+            }
+
+            /** Properties of a MsgCreateAttestation. */
+            interface IMsgCreateAttestation {
+
+                /** MsgCreateAttestation creator */
+                creator?: (string|null);
+
+                /** MsgCreateAttestation identifier */
+                identifier?: (string|null);
+
+                /** MsgCreateAttestation identifierType */
+                identifierType?: (string|null);
+
+                /** MsgCreateAttestation rating */
+                rating?: (number|Long|null);
+            }
+
+            /** Represents a MsgCreateAttestation. */
+            class MsgCreateAttestation implements IMsgCreateAttestation {
+
+                /**
+                 * Constructs a new MsgCreateAttestation.
+                 * @param [properties] Properties to set
+                 */
+                constructor(properties?: blarsy.truststore.truststore.IMsgCreateAttestation);
+
+                /** MsgCreateAttestation creator. */
+                public creator: string;
+
+                /** MsgCreateAttestation identifier. */
+                public identifier: string;
+
+                /** MsgCreateAttestation identifierType. */
+                public identifierType: string;
+
+                /** MsgCreateAttestation rating. */
+                public rating: (number|Long);
+
+                /**
+                 * Creates a new MsgCreateAttestation instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgCreateAttestation instance
+                 */
+                public static create(properties?: blarsy.truststore.truststore.IMsgCreateAttestation): blarsy.truststore.truststore.MsgCreateAttestation;
+
+                /**
+                 * Encodes the specified MsgCreateAttestation message. Does not implicitly {@link blarsy.truststore.truststore.MsgCreateAttestation.verify|verify} messages.
+                 * @param message MsgCreateAttestation message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(message: blarsy.truststore.truststore.IMsgCreateAttestation, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Encodes the specified MsgCreateAttestation message, length delimited. Does not implicitly {@link blarsy.truststore.truststore.MsgCreateAttestation.verify|verify} messages.
+                 * @param message MsgCreateAttestation message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encodeDelimited(message: blarsy.truststore.truststore.IMsgCreateAttestation, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgCreateAttestation message from the specified reader or buffer.
+                 * @param reader Reader or buffer to decode from
+                 * @param [length] Message length if known beforehand
+                 * @returns MsgCreateAttestation
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): blarsy.truststore.truststore.MsgCreateAttestation;
+
+                /**
+                 * Decodes a MsgCreateAttestation message from the specified reader or buffer, length delimited.
+                 * @param reader Reader or buffer to decode from
+                 * @returns MsgCreateAttestation
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): blarsy.truststore.truststore.MsgCreateAttestation;
+
+                /**
+                 * Verifies a MsgCreateAttestation message.
+                 * @param message Plain object to verify
+                 * @returns `null` if valid, otherwise the reason why it is not
+                 */
+                public static verify(message: { [k: string]: any }): (string|null);
+
+                /**
+                 * Creates a MsgCreateAttestation message from a plain object. Also converts values to their respective internal types.
+                 * @param object Plain object
+                 * @returns MsgCreateAttestation
+                 */
+                public static fromObject(object: { [k: string]: any }): blarsy.truststore.truststore.MsgCreateAttestation;
+
+                /**
+                 * Creates a plain object from a MsgCreateAttestation message. Also converts values to other types if specified.
+                 * @param message MsgCreateAttestation
+                 * @param [options] Conversion options
+                 * @returns Plain object
+                 */
+                public static toObject(message: blarsy.truststore.truststore.MsgCreateAttestation, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                /**
+                 * Converts this MsgCreateAttestation to JSON.
+                 * @returns JSON object
+                 */
+                public toJSON(): { [k: string]: any };
+            }
+
+            /** Properties of a MsgCreateAttestationResponse. */
+            interface IMsgCreateAttestationResponse {
+
+                /** MsgCreateAttestationResponse idValue */
+                idValue?: (string|null);
+            }
+
+            /** Represents a MsgCreateAttestationResponse. */
+            class MsgCreateAttestationResponse implements IMsgCreateAttestationResponse {
+
+                /**
+                 * Constructs a new MsgCreateAttestationResponse.
+                 * @param [properties] Properties to set
+                 */
+                constructor(properties?: blarsy.truststore.truststore.IMsgCreateAttestationResponse);
+
+                /** MsgCreateAttestationResponse idValue. */
+                public idValue: string;
+
+                /**
+                 * Creates a new MsgCreateAttestationResponse instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns MsgCreateAttestationResponse instance
+                 */
+                public static create(properties?: blarsy.truststore.truststore.IMsgCreateAttestationResponse): blarsy.truststore.truststore.MsgCreateAttestationResponse;
+
+                /**
+                 * Encodes the specified MsgCreateAttestationResponse message. Does not implicitly {@link blarsy.truststore.truststore.MsgCreateAttestationResponse.verify|verify} messages.
+                 * @param message MsgCreateAttestationResponse message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(message: blarsy.truststore.truststore.IMsgCreateAttestationResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Encodes the specified MsgCreateAttestationResponse message, length delimited. Does not implicitly {@link blarsy.truststore.truststore.MsgCreateAttestationResponse.verify|verify} messages.
+                 * @param message MsgCreateAttestationResponse message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encodeDelimited(message: blarsy.truststore.truststore.IMsgCreateAttestationResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a MsgCreateAttestationResponse message from the specified reader or buffer.
+                 * @param reader Reader or buffer to decode from
+                 * @param [length] Message length if known beforehand
+                 * @returns MsgCreateAttestationResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): blarsy.truststore.truststore.MsgCreateAttestationResponse;
+
+                /**
+                 * Decodes a MsgCreateAttestationResponse message from the specified reader or buffer, length delimited.
+                 * @param reader Reader or buffer to decode from
+                 * @returns MsgCreateAttestationResponse
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): blarsy.truststore.truststore.MsgCreateAttestationResponse;
+
+                /**
+                 * Verifies a MsgCreateAttestationResponse message.
+                 * @param message Plain object to verify
+                 * @returns `null` if valid, otherwise the reason why it is not
+                 */
+                public static verify(message: { [k: string]: any }): (string|null);
+
+                /**
+                 * Creates a MsgCreateAttestationResponse message from a plain object. Also converts values to their respective internal types.
+                 * @param object Plain object
+                 * @returns MsgCreateAttestationResponse
+                 */
+                public static fromObject(object: { [k: string]: any }): blarsy.truststore.truststore.MsgCreateAttestationResponse;
+
+                /**
+                 * Creates a plain object from a MsgCreateAttestationResponse message. Also converts values to other types if specified.
+                 * @param message MsgCreateAttestationResponse
+                 * @param [options] Conversion options
+                 * @returns Plain object
+                 */
+                public static toObject(message: blarsy.truststore.truststore.MsgCreateAttestationResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                /**
+                 * Converts this MsgCreateAttestationResponse to JSON.
+                 * @returns JSON object
+                 */
+                public toJSON(): { [k: string]: any };
+            }
+
             /** Properties of a Params. */
             interface IParams {
             }
