@@ -9,6 +9,7 @@ message Attestation {
   string identifierType = 3; 
   uint64 rating = 4; 
   string creator = 5;
+  int64 last_updated_at_height = 6;
 }
 
 message Ids {

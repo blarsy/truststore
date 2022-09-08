@@ -28,6 +28,9 @@ export interface TruststoreAttestation {
   /** @format uint64 */
   rating?: string;
   creator?: string;
+
+  /** @format int64 */
+  last_updated_at_height?: string;
 }
 
 export interface TruststoreGlobal {
@@ -48,7 +51,10 @@ export interface TruststoreMsgCreateAttestationResponse {
 /**
  * Params defines the parameters for the module.
  */
-export type TruststoreParams = object;
+export interface TruststoreParams {
+  /** @format uint64 */
+  attestationRewardlessUpdatePeriod?: string;
+}
 
 export interface TruststoreQueryAllAttestationResponse {
   attestation?: TruststoreAttestation[];

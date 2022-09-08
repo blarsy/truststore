@@ -30,6 +30,9 @@ paths:
                       format: uint64
                     creator:
                       type: string
+                    last_updated_at_height:
+                      type: string
+                      format: int64
               pagination:
                 type: object
                 properties:
@@ -122,6 +125,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/blarsy/truststore/truststore/attestation/{index}':
@@ -148,6 +161,9 @@ paths:
                     format: uint64
                   creator:
                     type: string
+                  last_updated_at_height:
+                    type: string
+                    format: int64
         default:
           description: An unexpected error response.
           schema:
@@ -199,6 +215,9 @@ paths:
                       format: uint64
                     creator:
                       type: string
+                    last_updated_at_height:
+                      type: string
+                      format: int64
         default:
           description: An unexpected error response.
           schema:
@@ -248,6 +267,9 @@ paths:
                     format: uint64
                   creator:
                     type: string
+                  last_updated_at_height:
+                    type: string
+                    format: int64
         default:
           description: An unexpected error response.
           schema:
@@ -430,6 +452,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/blarsy/truststore/truststore/identifier_type/{index}':
@@ -489,6 +521,10 @@ paths:
               params:
                 description: params holds all the parameters of this module.
                 type: object
+                properties:
+                  attestationRewardlessUpdatePeriod:
+                    type: string
+                    format: uint64
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
@@ -30895,6 +30931,9 @@ definitions:
         format: uint64
       creator:
         type: string
+      last_updated_at_height:
+        type: string
+        format: int64
   blarsy.truststore.truststore.Global:
     type: object
     properties:
@@ -30917,6 +30956,10 @@ definitions:
         type: string
   blarsy.truststore.truststore.Params:
     type: object
+    properties:
+      attestationRewardlessUpdatePeriod:
+        type: string
+        format: uint64
     description: Params defines the parameters for the module.
   blarsy.truststore.truststore.QueryAllAttestationResponse:
     type: object
@@ -30937,6 +30980,9 @@ definitions:
               format: uint64
             creator:
               type: string
+            last_updated_at_height:
+              type: string
+              format: int64
       pagination:
         type: object
         properties:
@@ -31018,6 +31064,9 @@ definitions:
             format: uint64
           creator:
             type: string
+          last_updated_at_height:
+            type: string
+            format: int64
   blarsy.truststore.truststore.QueryAttestationByCreatorResponse:
     type: object
     properties:
@@ -31037,6 +31086,9 @@ definitions:
               format: uint64
             creator:
               type: string
+            last_updated_at_height:
+              type: string
+              format: int64
   blarsy.truststore.truststore.QueryGetAttestationResponse:
     type: object
     properties:
@@ -31054,6 +31106,9 @@ definitions:
             format: uint64
           creator:
             type: string
+          last_updated_at_height:
+            type: string
+            format: int64
   blarsy.truststore.truststore.QueryGetGlobalResponse:
     type: object
     properties:
@@ -31081,6 +31136,10 @@ definitions:
       params:
         description: params holds all the parameters of this module.
         type: object
+        properties:
+          attestationRewardlessUpdatePeriod:
+            type: string
+            format: uint64
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   cosmos.base.query.v1beta1.PageRequest:
     type: object

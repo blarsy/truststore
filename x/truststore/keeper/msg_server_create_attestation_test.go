@@ -21,6 +21,10 @@ import (
 )
 
 func GetFakeCtx() context.Context {
+	return GetFakeCtxWithHeight(int64(1))
+}
+
+func GetFakeCtxWithHeight(height int64) context.Context {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 
@@ -29,7 +33,7 @@ func GetFakeCtx() context.Context {
 	stateStore.MountStoreWithDB(storeKey, sdk.StoreTypeIAVL, db)
 	stateStore.MountStoreWithDB(memStoreKey, sdk.StoreTypeMemory, nil)
 
-	sdkContext := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
+	sdkContext := sdk.NewContext(stateStore, tmproto.Header{Height: height}, false, log.NewNopLogger())
 	return sdk.WrapSDKContext(sdkContext)
 }
 
@@ -104,7 +108,8 @@ func newAttestationMatcher(attestation types.Attestation) gomock.Matcher {
 
 func TestCreateAttestation(t *testing.T) {
 	ctrl := gomock.NewController(t)
-	ctx := GetFakeCtx()
+	height := int64(321)
+	ctx := GetFakeCtxWithHeight(height)
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	identifier, identifierType, creator := "identifier", "identifierType", "creator"
 	nextId, rating := uint64(123), uint64(3)
@@ -128,11 +133,12 @@ func TestCreateAttestation(t *testing.T) {
 					attestationCreatorMock.EXPECT().GetGlobal(sdkCtx).Return(fakeGlobal, true),
 					attestationCreatorMock.EXPECT().SetAttestation(sdkCtx, newAttestationMatcher(
 						types.Attestation{
-							Index:          fmt.Sprint(nextId),
-							Identifier:     identifier,
-							IdentifierType: identifierType,
-							Rating:         rating,
-							Creator:        creator})),
+							Index:               fmt.Sprint(nextId),
+							Identifier:          identifier,
+							IdentifierType:      identifierType,
+							Rating:              rating,
+							Creator:             creator,
+							LastUpdatedAtHeight: height})),
 					attestationCreatorMock.EXPECT().SetGlobal(sdkCtx, newIncrementNextId(fakeGlobal)),
 				)
 			},

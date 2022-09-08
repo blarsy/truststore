@@ -8,5 +8,5 @@ option go_package = "github.com/blarsy/truststore/x/truststore/types";
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
-  
+  uint64 attestationRewardlessUpdatePeriod = 1;
 }

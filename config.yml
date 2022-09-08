@@ -18,6 +18,8 @@ genesis:
   chain_id: "local"
   app_state:
     truststore:
+      params:
+        attestationRewardlessUpdatePeriod: 100000
       attestationList: []
       global:
         nextId: 1

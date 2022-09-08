@@ -89,11 +89,12 @@ func CreateAttestation(goCtx context.Context, msg *types.MsgCreateAttestation, a
 	}
 
 	attestation := types.Attestation{
-		Index:          fmt.Sprint(global.NextId),
-		Identifier:     msg.Identifier,
-		IdentifierType: msg.IdentifierType,
-		Rating:         msg.Rating,
-		Creator:        msg.Creator,
+		Index:               fmt.Sprint(global.NextId),
+		Identifier:          msg.Identifier,
+		IdentifierType:      msg.IdentifierType,
+		Rating:              msg.Rating,
+		Creator:             msg.Creator,
+		LastUpdatedAtHeight: ctx.BlockHeight(),
 	}
 
 	global.NextId += 1

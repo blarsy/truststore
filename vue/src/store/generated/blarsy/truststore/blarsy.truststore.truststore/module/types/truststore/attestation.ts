@@ -10,6 +10,7 @@ export interface Attestation {
   identifierType: string;
   rating: number;
   creator: string;
+  last_updated_at_height: number;
 }
 
 export interface Ids {
@@ -31,6 +32,7 @@ const baseAttestation: object = {
   identifierType: "",
   rating: 0,
   creator: "",
+  last_updated_at_height: 0,
 };
 
 export const Attestation = {
@@ -49,6 +51,9 @@ export const Attestation = {
     }
     if (message.creator !== "") {
       writer.uint32(42).string(message.creator);
+    }
+    if (message.last_updated_at_height !== 0) {
+      writer.uint32(48).int64(message.last_updated_at_height);
     }
     return writer;
   },
@@ -74,6 +79,9 @@ export const Attestation = {
           break;
         case 5:
           message.creator = reader.string();
+          break;
+        case 6:
+          message.last_updated_at_height = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -110,6 +118,14 @@ export const Attestation = {
     } else {
       message.creator = "";
     }
+    if (
+      object.last_updated_at_height !== undefined &&
+      object.last_updated_at_height !== null
+    ) {
+      message.last_updated_at_height = Number(object.last_updated_at_height);
+    } else {
+      message.last_updated_at_height = 0;
+    }
     return message;
   },
 
@@ -121,6 +137,8 @@ export const Attestation = {
       (obj.identifierType = message.identifierType);
     message.rating !== undefined && (obj.rating = message.rating);
     message.creator !== undefined && (obj.creator = message.creator);
+    message.last_updated_at_height !== undefined &&
+      (obj.last_updated_at_height = message.last_updated_at_height);
     return obj;
   },
 
@@ -150,6 +168,14 @@ export const Attestation = {
       message.creator = object.creator;
     } else {
       message.creator = "";
+    }
+    if (
+      object.last_updated_at_height !== undefined &&
+      object.last_updated_at_height !== null
+    ) {
+      message.last_updated_at_height = object.last_updated_at_height;
+    } else {
+      message.last_updated_at_height = 0;
     }
     return message;
   },
