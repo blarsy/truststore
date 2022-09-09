@@ -4,10 +4,12 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
+import { MsgUpdateAttestation } from "./types/truststore/tx";
 import { MsgCreateAttestation } from "./types/truststore/tx";
 
 
 const types = [
+  ["/blarsy.truststore.truststore.MsgUpdateAttestation", MsgUpdateAttestation],
   ["/blarsy.truststore.truststore.MsgCreateAttestation", MsgCreateAttestation],
   
 ];
@@ -41,6 +43,7 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
+    msgUpdateAttestation: (data: MsgUpdateAttestation): EncodeObject => ({ typeUrl: "/blarsy.truststore.truststore.MsgUpdateAttestation", value: MsgUpdateAttestation.fromPartial( data ) }),
     msgCreateAttestation: (data: MsgCreateAttestation): EncodeObject => ({ typeUrl: "/blarsy.truststore.truststore.MsgCreateAttestation", value: MsgCreateAttestation.fromPartial( data ) }),
     
   };

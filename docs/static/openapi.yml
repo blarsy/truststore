@@ -30954,6 +30954,8 @@ definitions:
     properties:
       idValue:
         type: string
+  blarsy.truststore.truststore.MsgUpdateAttestationResponse:
+    type: object
   blarsy.truststore.truststore.Params:
     type: object
     properties:

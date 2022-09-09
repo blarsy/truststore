@@ -19,6 +19,7 @@ func createNAttestation(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.A
 	items := make([]types.Attestation, n)
 	for i := range items {
 		items[i].Index = strconv.Itoa(i)
+		items[i].Creator = "creator"
 
 		keeper.SetAttestation(ctx, items[i])
 	}

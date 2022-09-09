@@ -16,10 +16,12 @@ func TestGenesis(t *testing.T) {
 
 		AttestationList: []types.Attestation{
 			{
-				Index: "0",
+				Index:   "0",
+				Creator: "creator",
 			},
 			{
-				Index: "1",
+				Index:   "1",
+				Creator: "creator",
 			},
 		},
 		IdentifierTypeList: []types.IdentifierType{

@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"context"
 	"testing"
 
 	"github.com/blarsy/truststore/x/truststore/keeper"
@@ -49,4 +50,21 @@ func TruststoreKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	k.SetParams(ctx, types.DefaultParams())
 
 	return k, ctx
+}
+
+func GetFakeCtx() context.Context {
+	return GetFakeCtxWithHeight(int64(1))
+}
+
+func GetFakeCtxWithHeight(height int64) context.Context {
+	storeKey := sdk.NewKVStoreKey(types.StoreKey)
+	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
+
+	db := tmdb.NewMemDB()
+	stateStore := store.NewCommitMultiStore(db)
+	stateStore.MountStoreWithDB(storeKey, sdk.StoreTypeIAVL, db)
+	stateStore.MountStoreWithDB(memStoreKey, sdk.StoreTypeMemory, nil)
+
+	sdkContext := sdk.NewContext(stateStore, tmproto.Header{Height: height}, false, log.NewNopLogger())
+	return sdk.WrapSDKContext(sdkContext)
 }

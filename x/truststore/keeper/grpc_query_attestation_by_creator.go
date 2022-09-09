@@ -18,7 +18,7 @@ func (k Keeper) AttestationByCreator(goCtx context.Context, req *types.QueryAtte
 
 	attestationsByUser := k.GetAttestationsByCreator(ctx, req.Creator)
 	var result []*types.Attestation
-	for i, _ := range attestationsByUser {
+	for i := range attestationsByUser {
 		result = append(result, &attestationsByUser[i])
 	}
 

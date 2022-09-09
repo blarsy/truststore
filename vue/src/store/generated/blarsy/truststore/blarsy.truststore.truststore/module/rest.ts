@@ -48,6 +48,8 @@ export interface TruststoreMsgCreateAttestationResponse {
   idValue?: string;
 }
 
+export type TruststoreMsgUpdateAttestationResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */

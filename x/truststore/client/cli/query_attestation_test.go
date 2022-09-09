@@ -29,7 +29,8 @@ func networkWithAttestationObjects(t *testing.T, n int) (*network.Network, []typ
 
 	for i := 0; i < n; i++ {
 		attestation := types.Attestation{
-			Index: strconv.Itoa(i),
+			Index:   strconv.Itoa(i),
+			Creator: "creator",
 		}
 		nullify.Fill(&attestation)
 		state.AttestationList = append(state.AttestationList, attestation)

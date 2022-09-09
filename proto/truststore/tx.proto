@@ -8,6 +8,7 @@ option go_package = "github.com/blarsy/truststore/x/truststore/types";
 // Msg defines the Msg service.
 service Msg {
       rpc CreateAttestation(MsgCreateAttestation) returns (MsgCreateAttestationResponse);
+  rpc UpdateAttestation(MsgUpdateAttestation) returns (MsgUpdateAttestationResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -20,6 +21,17 @@ message MsgCreateAttestation {
 
 message MsgCreateAttestationResponse {
   string idValue = 1;
+}
+
+message MsgUpdateAttestation {
+  string creator = 1;
+  string index = 2;
+  string identifier = 3;
+  string identifierType = 4;
+  uint64 rating = 5;
+}
+
+message MsgUpdateAttestationResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
