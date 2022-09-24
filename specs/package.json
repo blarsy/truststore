@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "cucumber-js"
+    "start": "cucumber-js",
+    "start-html": "cucumber-js --format html:./lastTest.html ; open ./lastTest.html"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^7.0.0",

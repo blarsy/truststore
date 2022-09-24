@@ -73,6 +73,20 @@ func (m *MockAttestationCreator) EXPECT() *MockAttestationCreatorMockRecorder {
 	return m.recorder
 }
 
+// CreatorHasAttestation mocks base method.
+func (m *MockAttestationCreator) CreatorHasAttestation(ctx types0.Context, creator, identifierType, identifier string) bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreatorHasAttestation", ctx, creator, identifierType, identifier)
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// CreatorHasAttestation indicates an expected call of CreatorHasAttestation.
+func (mr *MockAttestationCreatorMockRecorder) CreatorHasAttestation(ctx, creator, identifierType, identifier interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreatorHasAttestation", reflect.TypeOf((*MockAttestationCreator)(nil).CreatorHasAttestation), ctx, creator, identifierType, identifier)
+}
+
 // GetGlobal mocks base method.
 func (m *MockAttestationCreator) GetGlobal(arg0 types0.Context) (types.Global, bool) {
 	m.ctrl.T.Helper()

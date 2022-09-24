@@ -21,6 +21,7 @@ type AttestationCreator interface {
 	SetGlobal(sdk.Context, types.Global)
 	SetAttestation(sdk.Context, types.Attestation)
 	GetIdentifierType(sdk.Context, string) (types.IdentifierType, bool)
+	CreatorHasAttestation(ctx sdk.Context, creator string, identifierType string, identifier string) bool
 }
 
 func CreateAttestation(goCtx context.Context, msg *types.MsgCreateAttestation, attestationCreator AttestationCreator) (*types.MsgCreateAttestationResponse, error) {
@@ -34,6 +35,10 @@ func CreateAttestation(goCtx context.Context, msg *types.MsgCreateAttestation, a
 	global, found := attestationCreator.GetGlobal(ctx)
 	if !found {
 		return nil, fmt.Errorf("global state object not found")
+	}
+
+	if attestationCreator.CreatorHasAttestation(ctx, msg.Creator, msg.IdentifierType, msg.Identifier) {
+		return nil, fmt.Errorf("attempt to create duplicate attestation")
 	}
 
 	attestation := types.Attestation{

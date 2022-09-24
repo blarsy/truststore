@@ -22,7 +22,7 @@ var _ = strconv.IntSize
 func TestAttestationQuerySingle(t *testing.T) {
 	keeper, ctx := keepertest.TruststoreKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNAttestation(keeper, ctx, 2)
+	msgs := createNAttestation(keeper, ctx, "creator", 2)
 	for _, tc := range []struct {
 		desc     string
 		request  *types.QueryGetAttestationRequest
@@ -73,7 +73,7 @@ func TestAttestationQuerySingle(t *testing.T) {
 func TestAttestationQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.TruststoreKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNAttestation(keeper, ctx, 5)
+	msgs := createNAttestation(keeper, ctx, "creator", 5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllAttestationRequest {
 		return &types.QueryAllAttestationRequest{

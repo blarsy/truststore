@@ -111,6 +111,7 @@ func TestCreateAttestation(t *testing.T) {
 			setupMock: func() {
 				gomock.InOrder(
 					attestationCreatorMock.EXPECT().GetGlobal(sdkCtx).Return(fakeGlobal, true),
+					attestationCreatorMock.EXPECT().CreatorHasAttestation(sdkCtx, creator, identifierType, identifier).Return(false),
 					attestationCreatorMock.EXPECT().SetAttestation(sdkCtx, newAttestationMatcher(
 						types.Attestation{
 							Index:               fmt.Sprint(nextId),
@@ -120,6 +121,16 @@ func TestCreateAttestation(t *testing.T) {
 							Creator:             creator,
 							LastUpdatedAtHeight: height})),
 					attestationCreatorMock.EXPECT().SetGlobal(sdkCtx, newIncrementNextId(fakeGlobal)),
+				)
+			},
+		},
+		{
+			name:                         "Attenpt to create duplicate attestation",
+			validateIdentifierTypeResult: nil,
+			setupMock: func() {
+				gomock.InOrder(
+					attestationCreatorMock.EXPECT().GetGlobal(sdkCtx).Return(fakeGlobal, true),
+					attestationCreatorMock.EXPECT().CreatorHasAttestation(sdkCtx, creator, identifierType, identifier).Return(true),
 				)
 			},
 		},
@@ -143,6 +154,10 @@ func TestCreateAttestation(t *testing.T) {
 		{
 			res: &types.MsgCreateAttestationResponse{IdValue: fmt.Sprint(nextId)},
 			err: nil,
+		},
+		{
+			res: nil,
+			err: fmt.Errorf("attempt to create duplicate attestation"),
 		},
 		{
 			res: nil,
