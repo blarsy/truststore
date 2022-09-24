@@ -57,9 +57,33 @@ func (k Keeper) RemoveAttestation(
 
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AttestationKeyPrefix))
+	attestationToRemove, found := k.GetAttestation(ctx, index)
+	if !found {
+		return
+	}
+	storeIndexedByCreator := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AttestationByCreatorKeyPrefix))
+
+	creatorBytes := []byte(attestationToRemove.Creator)
+	b := storeIndexedByCreator.Get(creatorBytes)
+	indexes := types.Ids{}
+	k.cdc.MustUnmarshal(b, &indexes)
+
+	for i, loopedIndex := range indexes.Indexes {
+		if index == loopedIndex {
+			itemsToStore := types.Ids{Indexes: remove(indexes.Indexes, i)}
+			itemsToStoreBytes := k.cdc.MustMarshal(&itemsToStore)
+			storeIndexedByCreator.Set(creatorBytes, itemsToStoreBytes)
+		}
+	}
+
 	store.Delete(types.AttestationKey(
 		index,
 	))
+}
+
+func remove(s []string, i int) []string {
+	s[i] = s[len(s)-1]
+	return s[:len(s)-1]
 }
 
 // GetAllAttestation returns all attestation
@@ -78,7 +102,7 @@ func (k Keeper) GetAllAttestation(ctx sdk.Context) (list []types.Attestation) {
 	return
 }
 
-func (k Keeper) GetAttestationsByCreator(ctx sdk.Context, creator string) (list []types.Attestation) {
+var getAttestationsByCreator = func(k Keeper, ctx sdk.Context, creator string) (list []types.Attestation) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AttestationKeyPrefix))
 	storeIndexedByCreator := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AttestationByCreatorKeyPrefix))
 	b := storeIndexedByCreator.Get([]byte(creator))
@@ -95,4 +119,19 @@ func (k Keeper) GetAttestationsByCreator(ctx sdk.Context, creator string) (list 
 	}
 
 	return
+}
+
+func (k Keeper) GetAttestationsByCreator(ctx sdk.Context, creator string) []types.Attestation {
+	return getAttestationsByCreator(k, ctx, creator)
+}
+
+func (k Keeper) CreatorHasAttestation(ctx sdk.Context, creator string, identifierType string, identifier string) bool {
+	creatorAttestations := getAttestationsByCreator(k, ctx, creator)
+	for _, attestation := range creatorAttestations {
+		if attestation.Identifier == identifier && attestation.IdentifierType == identifierType {
+			return true
+		}
+	}
+
+	return false
 }

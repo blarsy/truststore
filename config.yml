@@ -15,7 +15,7 @@ faucet:
   name: bob
   coins: ["1000000utrust"]
 genesis:
-  chain_id: "local"
+  chain_id: "local-ci"
   app_state:
     truststore:
       params:

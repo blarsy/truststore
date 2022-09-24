@@ -1,129 +1,102 @@
-import { Given, When, Then, BeforeAll } from '@cucumber/cucumber'
+import { Given, When, Then, BeforeAll, AfterAll } from '@cucumber/cucumber'
 import axios from 'axios'
-import { exec } from 'node:child_process'
 import assert from 'assert'
+import { executeProcess, executeProcessAndParseResponse } from './lib/process'
+import { cleanStart, shutDown, getAccountBalance, settings } from './lib/blockchainPlumbing'
 
-//const accountName = 'ciUser'
-const accountName = 'bob'
-let accountAddress: string
-const chainId = 'local-ci'
-let lastCreatedAttestationData: {
-    rating: number,
-    email: string,
-    creator: string
-}
-let initialCoinOnAccount: number
-const feeCoinDenom = 'trust'
-const fee = 10
-
-const executeProcess = (cmd: string, analyzer: (output: string)=>(void), verbose = false) => {
-    let output = '', error = ''
-    return new Promise(async (resolve, reject) => {
-        if(verbose) console.log(`Executing command ${cmd}\n`)
-        const process = await exec(cmd)
-        process.stdout.on("data", chunk => {
-            output += chunk
-        })
-        process.stderr.on('data', chunk => {
-            error += chunk
-        })
-
-        process.on('close', async (code, signals) => {
-            if(code != 0) {
-                if(verbose) console.log(`Exiting process with code ${code}, signals ${signals}, error ${error}\n`)
-                reject(error)
-            }
-
-            try {
-                if(verbose) console.log(`Analyzing output: ${output}\n`)
-                await analyzer(output)
-                if(verbose) console.log(`Command successful\n`)
-                resolve(null)
-            }
-            catch(e) {
-                if(verbose) console.log(`Error caught during analysis: ${e}\n`)
-                reject(e)
-            }
-        })
-    })
-}
-const getAccountBalance = async (coinDenom: string, accountAddress: string): Promise<number> => {
-    let amountFound: number
-    await executeProcess(`truststored query bank balances ${accountAddress} --node http://0.0.0.0:26657`, output => {
-        const matches = new RegExp(`- amount: "(\\d+)"\\n  denom: ${feeCoinDenom}`).exec(output)
-        if(matches.length > 0){
-            amountFound = parseInt(matches[1])
-        } else {
-            throw  new Error(`could not determine initial amount of ${feeCoinDenom} from account ${accountName}`)
-        }
-    })
-    return amountFound
+const scenariosState = {
+    lastOutput: '',
+    lastCreatedAttestationData: {} as{
+        rating: number,
+        email: string,
+        creator: string
+    },
+    initialCoinOnAccount: null as number
 }
 
-BeforeAll( async() => {
-    await executeProcess(`truststored keys show ${accountName}`, output => {
-        const matches = new RegExp('  address: (.*)', 'm').exec(output)
-        if(matches.length > 0){
-            accountAddress = matches[1]
-        } else {
-            throw  new Error(`address of ${accountName} not found`)
-        }
-    })
-    initialCoinOnAccount = await getAccountBalance(feeCoinDenom, accountAddress)
-    return executeProcess(`truststored config chain-id ${chainId}`, () => {})
-})
+const createAttestation = (identifier: string, identifierType: string, rating: number, creator: string): Promise<string> => {
+    return executeProcess(`truststored tx truststore create-attestation ${identifier} ${identifierType} ${rating} --from ${creator} --yes --node http://0.0.0.0:26657 --fees ${settings.fee}${settings.feeCoinDenom}`)
+}
 
-Given('I have a Cosmos portfolio', () => {
-    return executeProcess('truststored keys list', async output => {
-        const portfolioExists = new RegExp('- name: ' + accountName).test(output)
-        if (!portfolioExists) {
-            console.log(`Creating account ${accountName}...\n`)
-            try {
-                await executeProcess(`truststored keys add ${accountName}`, output => {})
-                console.log('Key created\n')
-                try {
-                    await executeProcess(`truststored add-genesis-account ${accountName} 10000token,100000000stake`, output => {})
-                    console.log('Account created\n')
-                } catch(e) {
-                    throw e
-                }
-            } catch(e) {
-                throw e
-            }
-        } else {
-            console.log(`Account ${accountName} exists already. Skipping\n`)
-        }
-    })
-})
+BeforeAll(cleanStart)
 
-When('I give a rating of {int} to the rated with email {}', (rating: number, email: string) => {
-    lastCreatedAttestationData = {
-        rating, email, creator: accountName
+AfterAll(shutDown)
+
+Given('I have a Cosmos portfolio with {int} gas', async (gas: number) => {
+    settings.accountAddress = await executeProcessAndParseResponse(`truststored keys show ${settings.accountName}`, /^  address: (.*)$/m)
+    if (!settings.accountAddress || settings.accountAddress == '') {
+        settings.accountAddress = await executeProcessAndParseResponse(`truststored keys add ${settings.accountName}`, /^  address: (.*)$/m)
+        // transfer the expected amount of gas
+        await executeProcess(`truststored tx bank send ${settings.vaultAccountName} ${settings.accountAddress} ${gas}${settings.feeCoinDenom} --yes --node http://0.0.0.0:26657`)
+        console.log(`Account ${settings.accountName} created\n`)
+    } else {
+        const currentBalance = await getAccountBalance(settings.feeCoinDenom, settings.accountAddress)
+        // If too much gas, error
+        if(currentBalance > gas) throw new Error(`too much gas on account ${settings.accountName}, should be maximum ${gas}`)
+        if(currentBalance !== gas) {
+            // if too few gas, send some to have exactly the expected amount
+            await executeProcess(`truststored tx bank send ${settings.vaultAccountName} ${settings.accountAddress} ${gas - currentBalance}${settings.feeCoinDenom} --yes --node http://0.0.0.0:26657`)
+        }
     }
-    return executeProcess(`truststored tx truststore create-attestation ${email} 1 ${rating} --from ${accountName} --yes --node http://0.0.0.0:26657 --fees ${fee}${feeCoinDenom}`, output => {})
+    scenariosState.initialCoinOnAccount = gas
 })
+
+Given('the attestation correction period {int} blocks', attestationRewardlessUpdatePeriod => {
+    
+})
+
+When('I give a rating of {int} to the rated with email {}', async (rating: number, email: string) => {
+    scenariosState.lastCreatedAttestationData = {
+        rating, email, creator: settings.accountName
+    }
+    try {
+        scenariosState.lastOutput = await createAttestation(email, "1", rating, settings.accountName)
+    }
+    catch(e) {
+        scenariosState.lastOutput = e.toString()
+    }
+})
+
+const processOutputsignalsSuccess = (output: string) => {
+    if(output.match(/^code: 0$/m))
+        return true
+    else {
+        console.error(`Process failed.\nOutput: ${output}`)
+        return false
+    }
+}
 
 Then('the attestation is created', async () => {
-    const res = await axios.get(`http://0.0.0.0:1317/blarsy/truststore/truststore/attestation_by_creator_identifier/${accountAddress}/1/${lastCreatedAttestationData.email}`)
-    assert.equal(res.status, 200, `Success status code 200 expected, got ${res.status}`)
-    const savedAttestation = res.data.attestation
-    assert(savedAttestation.rating, lastCreatedAttestationData.rating.toString())
-    assert(savedAttestation.identifier, lastCreatedAttestationData.email)
-    assert(savedAttestation.identifierType, "1")
-    assert(savedAttestation.creator, accountAddress)
+    assert(processOutputsignalsSuccess(scenariosState.lastOutput))
+    const url = `http://0.0.0.0:1317/blarsy/truststore/truststore/attestation_by_creator_identifier/${settings.accountAddress}/1/${scenariosState.lastCreatedAttestationData.email}`
+    try {
+        const res = await axios.get(url)
+        assert.equal(res.status, 200, `Success status code 200 expected, got ${res.status}`)
+        const savedAttestation = res.data.attestation
+        assert(savedAttestation.rating, scenariosState.lastCreatedAttestationData.rating.toString())
+        assert(savedAttestation.identifier, scenariosState.lastCreatedAttestationData.email)
+        assert(savedAttestation.identifierType, "1")
+        assert(savedAttestation.creator, settings.accountAddress)
+    } catch(e) {
+        console.error(`Failure querying '${url}':\n${e}`)
+    }
+})
+
+Then('the operation fails because of an attempt to duplicate an attestation', () => {
+    assert.match(scenariosState.lastOutput, new RegExp('duplicate'))
 })
 
 Then('my account is debited by some gas tokens', async () => {
-    const newBalance = await getAccountBalance(feeCoinDenom, accountAddress)
-    assert.equal(newBalance, initialCoinOnAccount - fee)
+    const newBalance = await getAccountBalance(settings.feeCoinDenom, settings.accountAddress)
+    assert.equal(newBalance, scenariosState.initialCoinOnAccount - settings.fee)
 })
 
-Given('attestations I created', datatable => {
-    return 'pending'
-})
-
-Given("my portfolio has {int} gas in it", (gasInPortfolio: number) => {
-    return 'pending'
+Given('attestations I created', async datatable => {
+    for(const row of datatable.rows()) {
+        const output = await createAttestation(row[1], row[0], row[2], settings.accountName)
+        if(!processOutputsignalsSuccess(output))
+            throw new Error(`Attestation creation failed, command output:  ${output}`)
+    }
 })
 
 Given('the attestation correction period is {int} days', (correctionPeriodInDays: number) => {
